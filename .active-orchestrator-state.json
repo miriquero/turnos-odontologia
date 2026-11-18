@@ -1,7 +1,158 @@
 {
   "version": 5,
-  "step": "discovery",
+  "step": "roadmap",
   "owner": "active-orchestrator",
+  "discovery": {
+    "created_by": "discovery-research",
+    "sources_fetched_at": "2026-11-18",
+    "sources": [
+      "docs/discovery/sources/competidores-argentina.md",
+      "docs/discovery/sources/competidores-latam.md",
+      "docs/discovery/sources/competidores-internacionales.md"
+    ],
+    "competitors": [
+      {
+        "name": "Odonto.ar",
+        "notes_file": "docs/discovery/sources/competidores-argentina.md"
+      },
+      {
+        "name": "Dentia",
+        "notes_file": "docs/discovery/sources/competidores-argentina.md"
+      },
+      {
+        "name": "DentiClick",
+        "notes_file": "docs/discovery/sources/competidores-argentina.md"
+      },
+      {
+        "name": "DENTQ",
+        "notes_file": "docs/discovery/sources/competidores-argentina.md"
+      },
+      {
+        "name": "VecDent",
+        "notes_file": "docs/discovery/sources/competidores-argentina.md"
+      },
+      {
+        "name": "AgendaPro",
+        "notes_file": "docs/discovery/sources/competidores-argentina.md"
+      },
+      {
+        "name": "Dentalink",
+        "notes_file": "docs/discovery/sources/competidores-latam.md"
+      },
+      {
+        "name": "Simples Dental",
+        "notes_file": "docs/discovery/sources/competidores-latam.md"
+      },
+      {
+        "name": "Clinicorp",
+        "notes_file": "docs/discovery/sources/competidores-latam.md"
+      },
+      {
+        "name": "Dentidesk",
+        "notes_file": "docs/discovery/sources/competidores-latam.md"
+      },
+      {
+        "name": "MR Dental Cloud",
+        "notes_file": "docs/discovery/sources/competidores-latam.md"
+      },
+      {
+        "name": "Open Dental",
+        "notes_file": "docs/discovery/sources/competidores-internacionales.md"
+      },
+      {
+        "name": "tab32",
+        "notes_file": "docs/discovery/sources/competidores-internacionales.md"
+      },
+      {
+        "name": "Ascend by Dentrix",
+        "notes_file": "docs/discovery/sources/competidores-internacionales.md"
+      },
+      {
+        "name": "Curve Dental",
+        "notes_file": "docs/discovery/sources/competidores-internacionales.md"
+      },
+      {
+        "name": "Dentally",
+        "notes_file": "docs/discovery/sources/competidores-internacionales.md"
+      },
+      {
+        "name": "EXACT",
+        "notes_file": "docs/discovery/sources/competidores-internacionales.md"
+      },
+      {
+        "name": "Doctolib",
+        "notes_file": "docs/discovery/sources/competidores-internacionales.md"
+      }
+    ],
+    "problema": "Los consultorios odontologicos pierden horas de sillon por turnos superpuestos, ausentismo de pacientes y reserva cautiva del telefono en horario de atencion.",
+    "usuarios": [
+      "Odontologo dueno: administra agenda, prestaciones y sillones",
+      "Odontologo colega: atiende en sillones compartidos",
+      "Recepcion: agenda, reprograma y cancela turnos de terceros",
+      "Paciente: reserva, confirma, cancela o reprograma su turno"
+    ],
+    "casos_de_uso": [
+      "Agendar un turno validando que no se solape por profesional ni por sillon",
+      "Reprogramar un turno a un horario libre",
+      "Cancelar un turno y liberar el horario",
+      "Reservar un turno online 24/7 como paciente",
+      "Recordar el turno al paciente antes de la fecha"
+    ],
+    "funcionalidades_necesarias": [
+      "Agenda con prevencion de solapamientos por profesional y por sillon",
+      "Reprogramar turno",
+      "Cancelar turno liberando el horario",
+      "Recordatorios automaticos al paciente",
+      "Reserva online por parte del paciente"
+    ],
+    "funcionalidades_opcionales": [
+      "Lista de espera",
+      "Sobreturnos autorizados",
+      "Obras sociales y prepagas",
+      "Facturacion ARCA",
+      "Odontograma y ficha clinica extendida",
+      "Reportes y metricas",
+      "Multi-sede"
+    ],
+    "reglas_de_negocio": [
+      "Cada prestacion define su duracion y el turno la hereda",
+      "Un profesional no puede tener dos turnos simultaneos",
+      "Un sillon no puede estar ocupado dos veces en la misma franja",
+      "Un turno que empieza exactamente cuando termina otro es valido (intervalos semiabiertos)",
+      "No se puede cancelar con menos de N horas de anticipacion",
+      "El sobreturno rompe la regla de solapamiento solo con autorizacion explicita y queda registrado",
+      "Un turno cancelado o ya atendido no se reprograma"
+    ],
+    "integraciones": [
+      "Notificaciones al paciente (WhatsApp Business API o email): interfaz de dominio con adaptador simulado en la v1",
+      "Mercado Pago para senas o cobros: futura",
+      "ARCA para facturacion: futura",
+      "Google Calendar: futura"
+    ],
+    "restricciones": [
+      "Stack: Java con Spring Boot",
+      "No hace falta interfaz grafica: puede ser una API o un modulo de dominio",
+      "Sin claves ni credenciales en el repositorio",
+      "Solo datos ficticios de pacientes en ejemplos, pruebas y capturas",
+      "Equipo de 5 personas trabajando en paralelo por pull request sobre master"
+    ],
+    "riesgos": [
+      "Evidencia debil: el relevamiento leyo las paginas con extraccion automatica y los sitios de resenas bloquearon el acceso, por lo que la mayoria es afirmacion comercial",
+      "Alcance ambicioso: cinco funcionalidades innegociables para el plazo disponible",
+      "Supuesto sin probar: que el usuario objetivo comparte dos o tres sillones",
+      "Dependencia externa en recordatorios: WhatsApp Business API requiere cuenta, claves y costo",
+      "Conflictos de merge: los cinco integrantes tocan la entidad Turno y la validacion de horarios"
+    ],
+    "preguntas_abiertas": [
+      "Cuanto dura realmente cada prestacion: el catalogo no esta validado con un profesional",
+      "Cuantas horas de anticipacion minima para cancelar",
+      "Quien autoriza un sobreturno y si queda auditado con usuario y motivo",
+      "Si el paciente puede cancelar o reprogramar solo, o unicamente la recepcion",
+      "Que pasa con el horario liberado: si se ofrece a una lista de espera",
+      "Como resuelven los competidores los sillones, los bloqueos y los solapamientos (marcado No evidenciado en casi todas las fichas)",
+      "Que exige concretamente la Ley 25.326 para datos de salud mas alla de lo que los proveedores declaran"
+    ]
+  },
   "foundation": {
     "version": 1,
     "order": [
@@ -16,15 +167,23 @@
     "phases": {
       "discovery": {
         "variant": "competitors",
-        "status": "pending",
+        "status": "done",
         "requires": [],
-        "outputs": ["docs/discovery/"]
+        "outputs": [
+          "docs/discovery/discovery.md",
+          "docs/discovery/sources/",
+          "docs/discovery/informe-discovery.md"
+        ]
       },
       "kb": {
         "variant": "import",
-        "status": "pending",
-        "requires": ["discovery"],
-        "outputs": ["knowledge-base/"]
+        "status": "done",
+        "requires": [
+          "discovery"
+        ],
+        "outputs": [
+          "knowledge-base/"
+        ]
       },
       "visual-design": {
         "variant": "off",
@@ -35,33 +194,71 @@
       "roadmap": {
         "variant": "local-markdown",
         "status": "pending",
-        "requires": ["kb"],
-        "outputs": ["CHANGES.md"]
+        "requires": [
+          "kb"
+        ],
+        "outputs": [
+          "CHANGES.md"
+        ]
       },
       "task-management": {
         "variant": "local",
         "status": "pending",
-        "requires": ["roadmap"],
+        "requires": [
+          "roadmap"
+        ],
         "outputs": []
       },
       "find-skill": {
         "variant": "recommend",
         "status": "pending",
-        "requires": ["kb"],
+        "requires": [
+          "kb"
+        ],
         "outputs": []
       },
       "registry": {
         "variant": "index",
         "status": "pending",
-        "requires": ["find-skill"],
-        "outputs": [".atl/skill-registry.md"]
+        "requires": [
+          "find-skill"
+        ],
+        "outputs": [
+          ".atl/skill-registry.md"
+        ]
       },
       "agents": {
         "variant": "generate",
         "status": "pending",
-        "requires": ["kb", "roadmap", "registry"],
-        "outputs": ["AGENTS.md", "CLAUDE.md"]
+        "requires": [
+          "kb",
+          "roadmap",
+          "registry"
+        ],
+        "outputs": [
+          "AGENTS.md",
+          "CLAUDE.md"
+        ]
       }
     }
+  },
+  "kb": {
+    "created_by": "kb-creator",
+    "completed_at": "2026-11-18",
+    "files": [
+      "knowledge-base/01_vision_y_objetivos.md",
+      "knowledge-base/02_descripcion_general.md",
+      "knowledge-base/03_actores_y_roles.md",
+      "knowledge-base/04_modelo_de_datos.md",
+      "knowledge-base/05_reglas_de_negocio.md",
+      "knowledge-base/06_funcionalidades.md",
+      "knowledge-base/07_flujos_principales.md",
+      "knowledge-base/08_arquitectura_propuesta.md",
+      "knowledge-base/09_decisiones_y_supuestos.md",
+      "knowledge-base/10_preguntas_abiertas.md"
+    ],
+    "stack": "Java con Spring Boot, tests con JUnit 5",
+    "system_type": "API o modulo de dominio, sin interfaz grafica obligatoria",
+    "nota": "Los archivos 01-06 los genero kb-creator; los archivos 07-10 se escribieron en sesion tras agotarse el cupo de los sub-agentes, respetando las convenciones de los anteriores."
   }
 }
