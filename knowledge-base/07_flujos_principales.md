@@ -30,7 +30,7 @@ Notación: **(OK)** camino feliz · **(E)** camino de error de negocio ·
      solapamiento**: los intervalos son semiabiertos (`RN-AG-04`). **Se acepta.**
    - Solo cuentan los turnos **vigentes**: los cancelados y las ausencias no
      ocupan agenda (`RN-AG-07`).
-5. **(OK)** El turno se crea en estado `PENDIENTE` (`RN-TU-01`).
+5. **(OK)** El turno se crea en estado `AGENDADO` (`RN-TU-01`).
 6. Se registra el evento en auditoría (`RN-AU`).
 7. Se encola la notificación al paciente a través del **puerto** de
    notificación, que en la v1 resuelve contra el adaptador simulado
@@ -111,7 +111,7 @@ Notación: **(OK)** camino feliz · **(E)** camino de error de negocio ·
 
 ## F-05 — Registrar una ausencia
 
-**Actor**: recepción u odontólogo · **Historia**: `US-015`
+**Actor**: recepción u odontólogo · **Historia**: `US-016` (ausencia) y `US-015` (atendido)
 
 1. Llegado el horario, el paciente no se presenta.
 2. **(E)** No se puede marcar ausente un turno **futuro**: el instante de inicio
@@ -125,7 +125,7 @@ Notación: **(OK)** camino feliz · **(E)** camino de error de negocio ·
 
 ## F-06 — Consultar la agenda y los huecos libres
 
-**Actor**: cualquier rol autenticado · **Historia**: `US-016`
+**Actor**: cualquier rol autenticado · **Historia**: `US-017` y `US-018`
 
 1. El actor pide la agenda de un **día** o un **rango**, filtrando por
    profesional o por sillón.

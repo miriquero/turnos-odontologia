@@ -6,12 +6,13 @@
 
 ## Preguntas de dominio
 
-### PA-01 — ¿Maven o Gradle?
+### PA-01 — ¿Maven o Gradle? — **RESUELTA (2026-11-19)**
 
-El stack es Java con Spring Boot (`D-07`), pero la herramienta de build no se
-eligió. **Hay que decidirlo antes del primer change**: cambiarlo después obliga
-a todo el equipo a rehacer su entorno.
-**Impacto**: alto y temprano. **Bloquea**: el change base.
+~~El stack es Java con Spring Boot (`D-07`), pero la herramienta de build no se
+eligió.~~
+
+**Resuelta: Gradle**, con wrapper versionado. Ver `D-08` en
+`09_decisiones_y_supuestos.md`. Ya no bloquea el change base.
 
 ### PA-02 — ¿Cuánto dura realmente cada prestación?
 

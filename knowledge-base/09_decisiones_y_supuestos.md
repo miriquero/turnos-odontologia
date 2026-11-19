@@ -134,3 +134,24 @@ resulta falsa, hay que rehacer lo que indica la columna de impacto.
 | `R-04` | Dependencia externa en los recordatorios | `D-04`: puerto con adaptador simulado |
 | `R-05` | Conflictos de merge: los cinco integrantes tocan `Turno` y la validación de horarios | `D-03` aísla la validación. El change base escribe `ServicioDisponibilidad` e `Intervalo` y después no se tocan; cada change agrega su propio caso de uso en archivos nuevos |
 | `R-06` | Concurrencia: dos altas simultáneas sobre la misma franja pueden pasar ambas la verificación antes de escribir | Señalado, **no resuelto** en la v1. Mitigación mínima: restricción de exclusión en la base o bloqueo pesimista sobre el recurso |
+
+### D-08 — La herramienta de build es Gradle
+
+**Contexto.** `D-07` fijó Java con Spring Boot pero dejó sin decidir la
+herramienta de build (`PA-01`), que bloqueaba el arranque del change base: define
+el archivo de configuración del proyecto y cómo se corren los tests, y tiene que
+ser la misma para los cinco integrantes.
+
+**Decisión.** **Gradle**, con wrapper (`gradlew`) versionado en el repositorio.
+
+**Consecuencias.** El equipo ya viene usando Gradle en otros trabajos de la
+materia, así que arranca sin fricción y tiene proyectos propios de referencia.
+El wrapper garantiza que los cinco compilen con la misma versión sin instalar
+nada. A cambio, la mayoría de los tutoriales de Spring Boot están escritos en
+Maven y hay que traducirlos.
+
+**Pendiente asociado.** Verificar con qué JDK compila: en trabajos anteriores de
+esta materia hubo que forzar un JDK distinto del que toma el sistema por
+defecto. Se confirma al armar el scaffolding en `C-01`.
+
+**Cierra**: `PA-01`.

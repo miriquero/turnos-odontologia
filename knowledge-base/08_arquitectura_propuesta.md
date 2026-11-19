@@ -53,7 +53,6 @@ public interface ServicioDisponibilidad {
     // Variante no excepcional, para consultas y para calcular huecos.
     ResultadoDisponibilidad evaluar(SolicitudDeTurno solicitud);
 
-    List<Franja> huecosLibres(LocalDate dia, Profesional p, Sillon s, Prestacion pr);
 }
 ```
 
@@ -67,6 +66,10 @@ Decisiones que lo definen:
   choque consigo misma.
 - **Solo considera turnos vigentes** (`RN-AG-07`): el filtro es parte de la
   consulta al repositorio, no del servicio.
+- **No calcula huecos libres.** El calculo de franjas disponibles vive
+  fuera del servicio y lo consume a traves de `evaluar`. Asi, agregar esa
+  funcionalidad mas adelante no obliga a modificar la interfaz, que queda
+  congelada despues del change base (ver `R-05`).
 - **No conoce al sobreturno**: el caso de uso `AutorizarSobreturno` decide saltar
   la verificación. El servicio nunca devuelve "disponible" para un intervalo
   ocupado. Así la excepción queda explícita en la capa de aplicación y no
