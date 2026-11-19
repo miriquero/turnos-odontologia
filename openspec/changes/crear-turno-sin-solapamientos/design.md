@@ -169,3 +169,26 @@ nueve métodos casi idénticos.
 - Si el proyecto suma una verificación automática de la regla de oro (dominio sin
   Spring) con una herramienta de análisis de dependencias o le alcanza con la
   revisión del PR. Se puede decidir en `C-11` sin tocar nada de lo escrito acá.
+
+## Ajuste posterior al Apply (2026-11-19)
+
+**`NotificadorPaciente` pasó a ser genérico.** La implementación inicial expuso
+`notificarTurnoAgendado(Turno)`, una firma específica del alta. Los cuatro
+changes de FASE 1 (reprogramar, cancelar, sobreturno, ausencia) también
+notifican al paciente, de modo que cada uno habría tenido que **agregar un
+método a este puerto** — es decir, cuatro personas editando el mismo archivo
+congelado, exactamente el conflicto que `R-05` busca evitar.
+
+Firma final:
+
+```java
+void notificar(Turno turno, AccionAuditoria accion);
+```
+
+Reutiliza `AccionAuditoria`, que ya enumera `CREADO`, `REPROGRAMADO`,
+`CANCELADO`, `MARCADO_ATENDIDO`, `MARCADO_AUSENTE` y `SOBRETURNO_AUTORIZADO`, así
+que no hace falta un enum nuevo. Cada change llama al mismo método con su propia
+acción y el puerto no se vuelve a tocar.
+
+El spec no fijaba la firma, así que este ajuste no modifica ningún escenario. La
+suite siguió en verde: 104 tests, 0 fallas.
