@@ -172,6 +172,27 @@ mientras estén todos los elementos; los 12 archivos de test viven en
 
 ---
 
+## Si preguntan por qué no hay interfaz
+
+Es una **decisión documentada**, no una falta. La consigna lo admite
+expresamente:
+
+> La implementación puede ser una API o un módulo con su lógica de dominio,
+> **no hace falta interfaz gráfica**.
+
+Y sobre el video pide mostrar "Apply/Verify: **los tests pasando**", no una
+pantalla.
+
+Cómo defenderlo en una línea: *la consigna admite un módulo de dominio, y
+preferimos invertir el tiempo en que la regla central esté bien especificada y
+probada con 104 tests, antes que en una capa de presentación que no se evalúa*.
+
+El API REST igual está planificada como `C-10 api-rest-turnos`, asignada a Emi y
+marcada **opcional**: depende de `C-09` (persistencia) y se encara sólo si sobra
+tiempo después de cerrar la FASE 1.
+
+---
+
 ## Resumen
 
 | Criterio | Puntos | Estado |

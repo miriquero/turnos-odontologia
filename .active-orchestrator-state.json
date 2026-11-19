@@ -427,7 +427,8 @@
     ],
     "tests": "104 tests, 104 pasaron, 0 fallaron (./gradlew test, verificado por el orquestador)",
     "tareas": "41 de 41",
-    "ajuste_post_apply": "NotificadorPaciente paso a notificar(Turno, AccionAuditoria) para que los 4 changes de FASE 1 no tengan que editar un puerto congelado (R-05)"
+    "ajuste_post_apply": "NotificadorPaciente paso a notificar(Turno, AccionAuditoria) para que los 4 changes de FASE 1 no tengan que editar un puerto congelado (R-05)",
+    "artefacto_explore": "openspec/changes/archive/2026-11-19-crear-turno-sin-solapamientos/explore.md"
   },
   "engram": {
     "completado": "2026-11-19",
