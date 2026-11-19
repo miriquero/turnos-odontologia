@@ -6,7 +6,7 @@
 | **Materia** | Desarrollo de Software |
 | **Trabajo** | Trabajo Global de Integración |
 | **Entregable** | Informe de Discovery (investigación de mercado y producto) |
-| **Fecha** | 2026-11-18 |
+| **Fecha** | 2026-11-19 |
 | **Repositorio** | `turnos-odontologia` |
 
 ### Integrantes
@@ -17,7 +17,7 @@
 | Julián Fernández Drago | julianfdrago |
 | Augusto Quiroga | augusto163 |
 | Maximiliano Di Natale | maximiliano-di-natale |
-- Emiliano Jesus Echavarria — GitHub: eechavarria
+| Emiliano Jesus Echavarria | eechavarria |
 
 ---
 
@@ -57,7 +57,7 @@ Ordenada por relevancia para el mercado argentino: primero los productos con ofe
 | 16 | **Ascend by Dentrix** / Henry Schein One | Dirección en American Fork, Utah; país no declarado textualmente · consultorios y grupos multi-ubicación | Sí (AC): reserva online del paciente; lista de espera y reprogramación online: No evidenciado | Sí (AC): recordatorios de cita, recare, confirmaciones y mensajería bidireccional | Quick Exam, detección por IA y notas por voz (AC); odontograma y periodontograma: No evidenciado | Parcial: Ascend Starter USD 199 por mes; el resto es personalizado (No evidenciado); sin prueba, solo demo | https://www.dentrixascend.com/ · 2026-11-18 |
 | 17 | **Curve Dental** / CD Newco, LLC | Estados Unidos (Alpharetta, Georgia) y Canadá · consultorios independientes, multi-ubicación y DSO | Sí, listada como parte de la experiencia del paciente, sin detalle (AC) | Sí, listados junto a "Curve GRO Patient Engagement", sin detalle (AC) | Charting, periodontograma, imágenes y plan de tratamiento listados (AC); el término "odontograma" no figura | No evidenciado: la página se titula "Affordable & Transparent Pricing" pero no publica cifras y pide cotización | https://www.curvedental.com/pricing · 2026-11-18 |
 | 18 | **EXACT** / Software of Excellence (Henry Schein One) | Reino Unido, Australia y Nueva Zelanda · segmento No evidenciado | Sí (AC): sistema de reserva para pacientes, con alianza HealthEngine de 2020 para reserva online en su red | No evidenciado (sí un lanzamiento de recall online, según prensa sectorial no abierta) | No evidenciado | No evidenciado (el precio no es público) | https://www.henryscheinone.com/products/exact/ · 2026-11-18 |
-| 19 | **Doctolib** / Doctolib | Francia · segmento No evidenciado | Solo fuentes secundarias: el sitio oficial devolvió 403 y no pudo leerse | Solo fuentes secundarias | No evidenciado | No evidenciado. Un comparativo de un competidor menciona "desde 139 € TTC por profesional/mes"; dato secundario y sesgado, no confiable | Sitio oficial bloqueado (403) · https://pabau.com/fr/blog/planity-pro-vs-doctolib/ · 2026-11-18 |
+| 19 | **Doctolib** / Doctolib | Francia (Levallois-Perret) · plataforma de reserva para pacientes, con categoría de cirujano-dentista | **[CORREGIDO 2026-11-19]** Sí (C): el sitio oficial describe reserva de consultas en video o presenciales; es el núcleo del producto | **[CORREGIDO 2026-11-19]** Sí (C): "recevez des rappels pour ne jamais les manquer" | No evidenciado | No evidenciado: el sitio al paciente no publica precios. El "desde 139 €" citado antes proviene del blog de un competidor y **no se verificó** | https://www.doctolib.fr/ · verificado a mano el 2026-11-19 |
 
 ### Advertencia de lectura de la tabla
 
@@ -80,7 +80,7 @@ Las columnas "Reserva online", "Recordatorios" y "Odontograma" se eligieron porq
 | **4** | Cobertura amplia y detallada, con alguna capacidad central ausente o cobrada aparte |
 | **5** | Cobertura amplia y detallada que incluye las capacidades centrales del criterio |
 
-**Tratamiento de "No evidenciado": puntúa 0.** El criterio es explícito y se aplicó de forma uniforme a los 19 casos: este informe evalúa **lo demostrable públicamente, no lo posible**. Un proveedor que no documenta una función obliga al comprador a descubrirla en una demo, y ese costo de verificación es un atributo real del producto. Dicho esto, **el criterio penaliza a los productos con menos documentación pública, que no son necesariamente los peores productos**. El caso más claro es EXACT (0,70), un sistema con trayectoria larga en el mercado anglosajón cuyo sitio oficial publica muy poca información verificable; y el de Doctolib (0,35), cuyo sitio devolvió 403 y por lo tanto no tiene casi evidencia oficial en este relevamiento. Ninguno de los dos puntajes debe leerse como un juicio sobre el software. Simétricamente, un puntaje alto como el de Dentia (4,50) refleja **un sitio muy completo**, no un producto verificado: casi toda su evidencia es afirmación comercial de una sola página.
+**Tratamiento de "No evidenciado": puntúa 0.** El criterio es explícito y se aplicó de forma uniforme a los 19 casos: este informe evalúa **lo demostrable públicamente, no lo posible**. Un proveedor que no documenta una función obliga al comprador a descubrirla en una demo, y ese costo de verificación es un atributo real del producto. Dicho esto, **el criterio penaliza a los productos con menos documentación pública, que no son necesariamente los peores productos**. El caso más claro es EXACT (0,70), un sistema con trayectoria larga en el mercado anglosajón cuyo sitio oficial publica muy poca información verificable; y el de Doctolib, cuyo sitio devolvió 403 durante el relevamiento automático. **[CORREGIDO 2026-11-19]** La verificación manual pudo leerlo y su puntaje subió de 0,35 a 1,00, superando a EXACT: es la prueba más clara de que el criterio mide evidencia disponible y no calidad de producto. Ninguno de los dos puntajes debe leerse como un juicio sobre el software. Simétricamente, un puntaje alto como el de Dentia (4,50) refleja **un sitio muy completo**, no un producto verificado: casi toda su evidencia es afirmación comercial de una sola página.
 
 **Pesos aplicados** (suman 100%): Gestión de turnos y automatización 25%; Funcionalidad odontológica clínica 20%; Integraciones locales y WhatsApp 15%; Administración, cobros y facturación 15%; Experiencia del paciente 10%; Seguridad, exportación y trazabilidad 10%; Precio y facilidad de adopción 5%.
 
@@ -109,8 +109,8 @@ Abreviaturas de columnas: **T** = Gestión de turnos y automatización (25%); **
 | 15 | **Dentidesk** | 1 | 3 | 1 | 3 | 0 | 0 | 1 | **1,50** |
 | 16 | **Curve Dental** | 2 | 2 | 0 | 2 | 1 | 1 | 0 | **1,40** |
 | 17 | **DENTQ** | 1 | 3 | 1 | 1 | 0 | 1 | 2 | **1,35** |
-| 18 | **EXACT** | 1 | 1 | 1 | 0 | 1 | 0 | 0 | **0,70** |
-| 19 | **Doctolib** | 1 | 0 | 0 | 0 | 1 | 0 | 0 | **0,35** |
+| 18 | **Doctolib** | 2 | 0 | 0 | 0 | 4 | 1 | 0 | **1,00** |
+| 19 | **EXACT** | 1 | 1 | 1 | 0 | 1 | 0 | 0 | **0,70** |
 
 > **Corrección posterior a la verificación manual (2026-11-18).** La nota de
 > AgendaPro (AR) en "Precio y facilidad de adopción" bajó de 3 a 2, y su total
@@ -286,27 +286,44 @@ Se eligió una fuente de cada tipo, priorizando aquellas de las que **dependen l
 ### Plantilla de verificación
 
 Verificación realizada el **2026-11-18**, abriendo cada URL en el navegador.
-Verificado por: **[COMPLETAR: nombre del integrante]**
+Verificado por: **Martín Ignacio Riquero** (líder del grupo)
 
 | Fuente (URL) | Tipo | Qué afirma el informe | Qué encontré al abrirla | Qué corregí |
 |---|---|---|---|---|
 | https://dentia.tech/ | Sitio oficial | Puesto 1 de la matriz (4,50). Precios ARS 20.000/30.000/40.000, facturación ARCA, Ley 25.326 declarada, odontograma con periodontograma, recordatorios por email en Básico y por WhatsApp desde Pro, proveedor No evidenciado | **Se sostiene todo.** La página publica los tres precios, "Facturación electrónica ARCA" en el plan Básico y, en la FAQ, facturas A, B y C con notas de crédito y débito. El bloque de seguridad dice textualmente "Tratamiento de datos de salud conforme a la Ley 25.326", junto con 2FA, roles y registro de auditoría. El odontograma y el periodontograma figuran con carga por dictado de voz. La demo "Clínica Sonrisas" está rotulada como ficticia por el propio sitio. No aparece razón social en ninguna parte | **Nada.** Se confirma también que toda la evidencia proviene de una sola página y es afirmación comercial: no hay demostración, certificación externa ni dato de precisión de las funciones de IA |
 | https://agendapro.com/ar/planes | Precios | AgendaPro Argentina cuesta ARS 7.900 / 15.900 / 69.900, con ARS 20.000 por profesional adicional y API a USD 200. Inconsistencia con la FAQ dental, que dice "desde ARS 13.900" | **El informe estaba equivocado.** Esos precios son de la vertical **Belleza y Barbería**, que se muestra por defecto. La propia tabla comparativa de esa vertical aclara que ficha clínica, presupuestos y consentimientos **no están incluidos**, solo en Medspa y Salud. La vertical **Salud**, que es la que corresponde a odontología, cuesta **ARS 19.900 / 44.900 / 189.900**, con profesional adicional a ARS 8.000 en Premium y ARS 20.000 en PRO IA. El precio de la API no figura: dice "Conversemos" | **Se corrigieron los tres precios en la tabla A** y se eliminó el dato de API a USD 200, que no está publicado. La nota de "Precio y facilidad de adopción" bajó de 3 a 2 y el total de 3,65 a 3,60. **La "inconsistencia" denunciada no era del proveedor sino del informe**, por comparar dos verticales distintas |
 | https://ayuda.softwaredentalink.com/es/collections/19196578-modulo-exclusivo-para-argentina | Centro de ayuda | Dentalink tiene módulo argentino con obras sociales (creación, recaudación, conciliaciones) y receta electrónica argentina con firma digital certificada | La colección existe y tiene exactamente los 4 artículos citados, con esos títulos. Pero al abrir **"Receta electrónica Argentina"** (artículo 14744244, firmado por Patricia Maturana Palacios el 23 de abril de 2026) **el cuerpo está completamente vacío**: título, autora y fecha, y ni una línea de contenido | **La afirmación sobre receta electrónica pasa a "No evidenciado"**: se apoyaba en un artículo sin texto. Los títulos prometían más que el contenido, que era exactamente la sospecha. Las obras sociales siguen respaldadas por tres títulos, pero tampoco se leyó su contenido |
-| https://www.capterra.com/p/196361/Dentalink/ | Reseñas | Única fuente del precio USD 29 de Dentalink, un producto que no publica precios | **[COMPLETAR]** La URL sigue devolviendo 403, ahora con una verificación anti-bot de Cloudflare ("Security Check") que un navegador automatizado no puede pasar. Abrir desde un navegador normal y anotar si el precio de USD 29 aparece, a qué plan corresponde y de qué fecha es | **[COMPLETAR]** |
-| https://www.doctolib.fr/ y https://pro.doctolib.fr/ | Otro (sitio bloqueado) | Casi todas las celdas en "No evidenciado" y último puesto de la matriz (0,35), un puntaje que refleja la imposibilidad de leer el sitio y no el producto | **[COMPLETAR]** Ambas siguen devolviendo 403, con la verificación anti-bot de Cloudflare ("Êtes-vous humain ?"). Abrir desde un navegador normal y anotar si publica precios y qué funciones de agenda describe | **[COMPLETAR]** Decidir si Doctolib permanece en el informe con evidencia real, o se retira por falta de evidencia |
+| https://www.capterra.com/p/196361/Dentalink/ | Reseñas | Única fuente del precio USD 29 de Dentalink, un producto que no publica precios | **El precio se confirma, con más detalle del que tenía el informe.** La ficha muestra "Starting price: **$29 Per User, Per Month**". O sea que no es un precio de plan sino **por usuario y por mes**, un matiz que cambia la comparación: para una clínica de 5 profesionales serían USD 145 mensuales, no 29. La página no indica fecha de actualización del dato ni a qué plan corresponde, y sigue siendo fuente secundaria: Dentalink no lo publica en su sitio | **Se precisó la unidad**: el informe decía "USD 29" a secas y ahora aclara que es por usuario y por mes. Se mantiene la marca de fuente secundaria no verificada por el proveedor |
+| https://www.doctolib.fr/ y https://pro.doctolib.fr/ | Otro (sitio bloqueado) | Casi todas las celdas en "No evidenciado" y último puesto de la matriz (0,35), un puntaje que refleja la imposibilidad de leer el sitio y no el producto | **El sitio abre sin problema desde un navegador común**: el 403 era anti-bot, no una caída. Es una **plataforma de reserva orientada al paciente**, no un software de gestión odontológica: ofrece reserva de consultas en video o presenciales, recordatorios ("recevez des rappels"), mensajería con el profesional y repositorio de documentos de salud. Tiene categoría propia de cirujano-dentista. Publica cifras de adopción: 580.000 profesionales en Europa, 26 millones de personas por mes y 4,7 estrellas sobre más de 800.000 valoraciones en Francia (datos declarados a mayo de 2025). **No publica ningún precio** en el sitio al paciente; la gestión profesional vive en info.doctolib.fr | **Se corrigieron la tabla A y la matriz.** Reserva online y recordatorios pasaron de "solo fuentes secundarias" a **Comprobado**. El puntaje subió de **0,35 a 1,00** y Doctolib dejó de ser el último: ahora lo es EXACT (0,70). Se mantiene "No evidenciado" en odontograma y precio, y el "desde 139 €" del blog de un competidor **se descarta** por no haberse podido verificar |
 
 ### Conclusión de la verificación
 
-De las **tres fuentes que pudieron leerse, dos contenían afirmaciones que no se
-sostienen**: un precio equivocado por un factor de 2,5 y una funcionalidad
-respaldada por una página en blanco. Las dos fuentes restantes están protegidas
-por verificación anti-bot y requieren apertura manual desde un navegador común.
+**[ACTUALIZADO 2026-11-19 — las cinco fuentes verificadas]**
+
+De las cinco fuentes comprobadas a mano, **cuatro obligaron a corregir el
+informe**:
+
+| Fuente | Resultado |
+|---|---|
+| dentia.tech | Se sostiene sin cambios |
+| agendapro.com/ar/planes | Precio equivocado por un factor de 2,5: se citaba la vertical de belleza en lugar de la de salud |
+| Centro de ayuda de Dentalink | La funcionalidad se apoyaba en un artículo **vacío** |
+| Capterra (Dentalink) | El precio era por usuario y por mes, no por plan |
+| doctolib.fr | El 403 era anti-bot: el sitio abre y hay evidencia real. Cambió el puntaje y el orden de la matriz |
+
+Las dos últimas solo pudieron abrirse desde un navegador común, porque están
+protegidas con verificación anti-bot que un agente no puede —ni debe— saltear.
 
 El dato relevante para la metodología de este trabajo es que **ninguno de los
-dos errores era evidente en el informe**: ambos estaban correctamente citados,
-con URL y fecha, y clasificados como dato publicado. Solo aparecieron al abrir
-la fuente y leerla.
+cuatro errores era evidente en el informe**: todos estaban correctamente
+citados, con URL y fecha, y clasificados como dato publicado. Solo aparecieron
+al abrir la fuente y leerla.
+
+Dos de ellos tienen una causa que vale la pena nombrar, porque se repite: el
+agente **no puede distinguir lo que no pudo ver de lo que no existe**. A
+Doctolib le asignó el último puesto de la matriz por un bloqueo anti-bot, y al
+artículo vacío de Dentalink le dio por bueno lo que prometía su título. En los
+dos casos, la ausencia de información se convirtió en una afirmación.
 
 ---
 
