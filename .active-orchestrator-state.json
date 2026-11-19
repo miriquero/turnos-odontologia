@@ -409,5 +409,24 @@
       "github": "eechavarria",
       "change": "C-05 registrar-ausencia-y-atencion-de-turno"
     }
-  ]
+  ],
+  "opsx": {
+    "change_base": "crear-turno-sin-solapamientos",
+    "ciclo_completado": "2026-11-19",
+    "fases": {
+      "explore": "done",
+      "propose": "done",
+      "apply": "done",
+      "verify": "done",
+      "archive": "done"
+    },
+    "archivado_en": "openspec/changes/archive/2026-11-19-crear-turno-sin-solapamientos",
+    "specs_vigentes": [
+      "agenda/disponibilidad (11 requisitos, 29 escenarios)",
+      "agenda/alta-de-turno (9 requisitos, 23 escenarios)"
+    ],
+    "tests": "104 tests, 104 pasaron, 0 fallaron (./gradlew test, verificado por el orquestador)",
+    "tareas": "41 de 41",
+    "ajuste_post_apply": "NotificadorPaciente paso a notificar(Turno, AccionAuditoria) para que los 4 changes de FASE 1 no tengan que editar un puerto congelado (R-05)"
+  }
 }
