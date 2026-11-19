@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "step": "task-management",
+  "step": "done",
   "owner": "active-orchestrator",
   "discovery": {
     "created_by": "discovery-research",
@@ -203,7 +203,7 @@
       },
       "task-management": {
         "variant": "local",
-        "status": "pending",
+        "status": "done",
         "requires": [
           "roadmap"
         ],
@@ -211,7 +211,7 @@
       },
       "find-skill": {
         "variant": "recommend",
-        "status": "pending",
+        "status": "done",
         "requires": [
           "kb"
         ],
@@ -219,7 +219,7 @@
       },
       "registry": {
         "variant": "index",
-        "status": "pending",
+        "status": "done",
         "requires": [
           "find-skill"
         ],
@@ -229,7 +229,7 @@
       },
       "agents": {
         "variant": "generate",
-        "status": "pending",
+        "status": "done",
         "requires": [
           "kb",
           "roadmap",
@@ -278,6 +278,109 @@
     "bloqueantes": [
       "PA-01: Maven o Gradle sin decidir, bloquea C-01",
       "Quinto integrante sin nombre ni usuario de GitHub"
+    ]
+  },
+  "skills": {
+    "created_by": "find-skill",
+    "variant": "recommend",
+    "completed_at": "2026-11-19",
+    "decision": "No instalar ninguna skill nueva: las 9 relevantes ya estaban instaladas a nivel usuario y cubren todo el stack.",
+    "recommended": [
+      {
+        "skill": "java-springboot",
+        "estado": "ya instalada",
+        "justificacion": "Controllers, validacion, configuracion y errores de Spring Boot 3: es el framework del proyecto."
+      },
+      {
+        "skill": "springboot-patterns",
+        "estado": "ya instalada",
+        "justificacion": "Patrones de capas y acceso a datos; util para no romper la separacion hexagonal de D-03."
+      },
+      {
+        "skill": "springboot-tdd",
+        "estado": "ya instalada",
+        "justificacion": "TDD con MockMvc y Testcontainers: el trabajo exige un test por escenario del spec."
+      },
+      {
+        "skill": "java-junit",
+        "estado": "ya instalada",
+        "justificacion": "JUnit 5 y AssertJ, incluidos tests parametrizados: los 9 casos de RN-AG-04 son una tabla parametrizada natural."
+      },
+      {
+        "skill": "tdd",
+        "estado": "ya instalada",
+        "justificacion": "Ciclo rojo-verde-refactor generico; refuerza el modo TDD estricto del entorno."
+      },
+      {
+        "skill": "jpa-patterns",
+        "estado": "ya instalada",
+        "justificacion": "Relaciones, indices y N+1: la consulta de solapamiento es la mas caliente del sistema."
+      },
+      {
+        "skill": "spring-data-jpa",
+        "estado": "ya instalada",
+        "justificacion": "Repositorios y queries derivadas: C-09 implementa los puertos de repositorio sobre JPA."
+      },
+      {
+        "skill": "gradle-best-practices",
+        "estado": "ya instalada",
+        "justificacion": "Auditoria del build: D-08 eligio Gradle con wrapper versionado."
+      },
+      {
+        "skill": "postgres",
+        "estado": "ya instalada",
+        "justificacion": "Destino productivo segun 08_arquitectura_propuesta.md; aporta criterio de indices y constraints de exclusion para R-06."
+      }
+    ],
+    "descartadas": [
+      {
+        "skill": "github/awesome-copilot@create-spring-boot-java-project",
+        "justificacion": "Scaffolding de proyecto nuevo: C-01 ya define su propio scaffolding con Gradle, no hace falta."
+      },
+      {
+        "skill": "limrun-inc/skills@limrun-gradle",
+        "justificacion": "Orientada a emulacion y entornos remotos, no al build de este proyecto."
+      },
+      {
+        "skill": "kotlin/kotlin-agent-skills@*",
+        "justificacion": "El proyecto es Java, no Kotlin."
+      },
+      {
+        "skill": "pluginagentmarketplace/custom-plugin-java@*",
+        "justificacion": "Duplica lo que ya cubren java-springboot y java-junit, con menos instalaciones y fuente menos conocida."
+      }
+    ],
+    "installed": [],
+    "nota_equipo": "Las 9 skills son de instalacion a nivel usuario y no viajan con el repositorio. Se documentan en .atl/skill-registry.md y en AGENTS.md para que cada integrante decida si las instala; no son necesarias para compilar ni correr los tests."
+  },
+  "registry": {
+    "created_by": "skill-registry",
+    "completed_at": "2026-11-19",
+    "file": ".atl/skill-registry.md",
+    "skills_count": 31,
+    "versionado_en_git": true
+  },
+  "agents": {
+    "created_by": "agent-instruction",
+    "completed_at": "2026-11-19",
+    "files": [
+      "AGENTS.md",
+      "CLAUDE.md"
+    ],
+    "reglas_applied": [
+      "NUNCA importar Spring, JPA ni HTTP desde el paquete dominio",
+      "NUNCA usar datos reales de pacientes (regla propia del dominio)",
+      "NUNCA inventar alcance durante Apply: se vuelve a Propose",
+      "NUNCA archivar un change con tests en rojo"
+    ],
+    "reglas_descartadas_por_el_usuario": [
+      "Una sola regla de solapamiento (sigue en R-05 y CHANGES.md)",
+      "Duracion derivada de la prestacion (sigue en RN-AG-01)",
+      "Archivos nuevos por change (sigue en R-05)",
+      "Sin secretos en el repositorio (sigue en la consigna y en la KB)",
+      "Integraciones por puerto (sigue en D-04)",
+      "Git lo ejecuta una persona",
+      "Build con Gradle wrapper (sigue en D-08)"
     ]
   }
 }

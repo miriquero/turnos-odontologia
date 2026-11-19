@@ -10,7 +10,7 @@
 | Persistencia | Spring Data JPA | Opcional en el núcleo: el dominio no depende de JPA (ver `08`) |
 | Base de datos | H2 en memoria (desarrollo y tests); PostgreSQL (producción futura) | — |
 | Tests | JUnit 5 (Jupiter) + AssertJ; Mockito donde haga falta | **Obligatorio**: la regla de disponibilidad se prueba con tests |
-| Build | Maven o Gradle (una sola elección, ver `PA-01` en `10_preguntas_abiertas.md`) | — |
+| Build | **Gradle** con wrapper (`./gradlew`) versionado | Decidido en `D-08`; cierra `PA-01` |
 | Interfaz gráfica | **Ninguna en la v1** | Restricción del Discovery punto 9 |
 
 ## Arquitectura general
