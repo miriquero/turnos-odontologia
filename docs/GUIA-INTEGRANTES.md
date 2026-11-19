@@ -383,6 +383,51 @@ otra forma, y si no, es una decisión que afecta a los cinco.
 Esto no es burocracia: si cuatro personas editan los mismos archivos, los
 merges se vuelven un infierno.
 
+### Los helpers de test son compartidos: no les agregues métodos
+
+Hay un punto donde los cuatro pueden chocar, y no es el código de producción
+sino los tests. En `src/test/java/ar/edu/turnos/dobles/` viven estos helpers
+compartidos:
+
+```
+Escenario              armador de escenarios (vacio(), conSeed(), conTurno(...))
+DatosFicticios         catalogo de pacientes, profesionales, sillones, prestaciones
+RepositoriosEnMemoria  los dobles de los repositorios
+TurnoRepositorioEnMemoria
+RegistroAuditoriaEnMemoria
+NotificadorEspia
+```
+
+Los cuatro los van a usar, y es muy probable que a los cuatro se les ocurra
+agregarles un método: uno que cree un turno a punto de vencer, otro con un turno
+ya pasado, otro con dos turnos para mover uno sobre el otro.
+
+**Si los cuatro agregan métodos al mismo archivo, hay conflicto de merge.**
+
+La regla, entonces:
+
+- **Usá los helpers como están.** Alcanzan para la mayoría de los casos.
+- **Armá tus fixtures propias dentro de tu clase de test**, como métodos privados.
+  Por ejemplo, un `private Turno turnoQueVence(int enHoras)` en tu propio archivo.
+- Si de verdad necesitás algo en el helper compartido, **avisale a Martín** y lo
+  agrega él una sola vez, para todos.
+
+### El núcleo ya tiene lo que necesitás
+
+Antes de pedir un cambio en el código congelado, fijate: lo más probable es que
+ya esté. El change base dejó resuelto:
+
+| Lo que necesitás | Ya existe |
+|---|---|
+| Estados y sus transiciones | `EstadoTurno` con `puedeTransicionarA(...)` |
+| Qué estados ocupan la agenda | `EstadoTurno.ocupaAgenda()` — `ATENDIDO` sí, `CANCELADO` y `AUSENTE` no |
+| Acciones de auditoría | `AccionAuditoria` con las 6 acciones, incluida la tuya |
+| Notificar al paciente | `NotificadorPaciente.notificar(turno, accion)` — genérico a propósito |
+| Excluir un turno al revalidar | `FuenteDeOcupacion` ya recibe `excluirTurnoId` |
+
+Si algo de esto te falta, **hablalo antes de tocarlo**: probablemente haya otra
+forma, y si no la hay, es una decisión que afecta a los cinco.
+
 ---
 
 ## 11. Verify — correr los tests
