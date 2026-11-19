@@ -17,7 +17,7 @@
 | Julián Fernández Drago | julianfdrago |
 | Augusto Quiroga | augusto163 |
 | Maximiliano Di Natale | maximiliano-di-natale |
-| [COMPLETAR: nombre del quinto integrante] | [COMPLETAR: usuario de GitHub] |
+- Emiliano Jesus Echavarria — GitHub: eechavarria
 
 ---
 

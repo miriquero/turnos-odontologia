@@ -36,7 +36,7 @@ Conservá los IDs de las fichas al editar o reordenar.
 | Julián Fernández Drago | `julianfdrago` | Integrante |
 | Augusto Quiroga | `augusto163` | Integrante |
 | Maximiliano Di Natale | `maximiliano-di-natale` | Integrante |
-| [COMPLETAR: quinto integrante] | [COMPLETAR: usuario GitHub] | Integrante |
+| Emiliano Jesus Echavarria | `eechavarria` | Integrante |
 
 ---
 
@@ -154,12 +154,12 @@ Paso │ Líder (miriquero)         │ julianfdrago        │ augusto163      
 | C-02 | julianfdrago | `feat/reprogramar-turno` | miriquero |
 | C-03 | augusto163 | `feat/cancelar-turno-con-anticipacion-minima` | miriquero |
 | C-04 | maximiliano-di-natale | `feat/agendar-sobreturno-autorizado` | miriquero |
-| C-05 | [COMPLETAR: quinto integrante] | `feat/registrar-ausencia-y-atencion-de-turno` | miriquero |
+| C-05 | Emiliano Jesus Echavarria (`eechavarria`) | `feat/registrar-ausencia-y-atencion-de-turno` | miriquero |
 | C-06 | julianfdrago | `feat/administrar-recursos-catalogo-y-pacientes` | miriquero |
 | C-07 | miriquero | `feat/consultar-agenda-y-huecos-libres` | otro integrante |
 | C-08 | maximiliano-di-natale | `feat/auditoria-y-notificacion-simulada` | miriquero |
 | C-09 | augusto163 | `feat/persistencia-jpa-h2-y-concurrencia` | miriquero |
-| C-10 | [COMPLETAR: quinto integrante] | `feat/api-rest-turnos` | miriquero |
+| C-10 | Emiliano Jesus Echavarria (`eechavarria`) | `feat/api-rest-turnos` | miriquero |
 | C-11 | miriquero | `feat/verificacion-transversal-mvp` | otro integrante |
 | C-12 a C-18 | a definir | `feat/<nombre-del-change>` | miriquero |
 
@@ -278,7 +278,7 @@ Paso │ Líder (miriquero)         │ julianfdrago        │ augusto163      
 
 ### [C-05] `registrar-ausencia-y-atencion-de-turno`
 - **Estado**: `[ ]` pendiente
-- **Responsable**: [COMPLETAR: quinto integrante] — rama `feat/registrar-ausencia-y-atencion-de-turno`
+- **Responsable**: Emiliano Jesus Echavarria (`eechavarria`) — rama `feat/registrar-ausencia-y-atencion-de-turno`
 - **Scope**:
   - `aplicacion.casouso.RegistrarAusencia` (archivo nuevo): `AGENDADO → AUSENTE` (terminal), motivo opcional estructurado; no se aplica la anticipación mínima (`RN-TU-06`); solo si el instante de inicio ya pasó (turno futuro rechazado); turno `CANCELADO` rechazado (`RN-TU-02`)
   - `aplicacion.casouso.MarcarTurnoAtendido` (archivo nuevo): `AGENDADO → ATENDIDO` (terminal), sigue ocupando su franja histórica (`RN-AG-07`)
@@ -388,7 +388,7 @@ Paso │ Líder (miriquero)         │ julianfdrago        │ augusto163      
 
 ### [C-10] `api-rest-turnos`
 - **Estado**: `[ ]` pendiente — **opcional en v1** (la consigna admite módulo de dominio sin interfaz)
-- **Responsable**: [COMPLETAR: quinto integrante] — rama `feat/api-rest-turnos`
+- **Responsable**: Emiliano Jesus Echavarria (`eechavarria`) — rama `feat/api-rest-turnos`
 - **Scope**:
   - `infraestructura.rest`: controladores + DTOs sobre los casos de uso de C-01…C-08 (agendar, reprogramar, cancelar, sobreturno, ausencia, atendido, agenda, huecos)
   - Manejador de errores que devuelve el **código de regla** (`RN-AG-04`, etc.) en la respuesta
@@ -515,12 +515,12 @@ Paso │ Líder (miriquero)         │ julianfdrago        │ augusto163      
 | C-02 | `reprogramar-turno` | 1 | julianfdrago | C-01 | MEDIO | Sí |
 | C-03 | `cancelar-turno-con-anticipacion-minima` | 1 | augusto163 | C-01 | MEDIO | Sí |
 | C-04 | `agendar-sobreturno-autorizado` | 1 | maximiliano-di-natale | C-01 | ALTO | Sí |
-| C-05 | `registrar-ausencia-y-atencion-de-turno` | 1 | [COMPLETAR: quinto integrante] | C-01 | MEDIO | Sí |
+| C-05 | `registrar-ausencia-y-atencion-de-turno` | 1 | Emiliano Jesus Echavarria (`eechavarria`) | C-01 | MEDIO | Sí |
 | C-06 | `administrar-recursos-catalogo-y-pacientes` | 2 | julianfdrago | C-01 | BAJO | Sí |
 | C-07 | `consultar-agenda-y-huecos-libres` | 2 | miriquero | C-01 | MEDIO | Sí |
 | C-08 | `auditoria-y-notificacion-simulada` | 2 | maximiliano-di-natale | C-01 | CRITICO | Sí |
 | C-09 | `persistencia-jpa-h2-y-concurrencia` | 2 | augusto163 | C-01 | ALTO | Sí |
-| C-10 | `api-rest-turnos` | 2 | [COMPLETAR: quinto integrante] | C-01, C-09 | BAJO | Sí (opcional) |
+| C-10 | `api-rest-turnos` | 2 | Emiliano Jesus Echavarria (`eechavarria`) | C-01, C-09 | BAJO | Sí (opcional) |
 | C-11 | `verificacion-transversal-mvp` | 2 | miriquero | C-02…C-09 | BAJO | Sí |
 | C-12 | `bloqueos-de-agenda` | 3 | a definir | C-11, C-07 | CRITICO | No |
 | C-13 | `reporte-ausentismo-motivos-estructurados` | 3 | a definir | C-11, C-03, C-05 | MEDIO | No |

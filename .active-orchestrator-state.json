@@ -273,11 +273,10 @@
       "C-02 reprogramar-turno (julianfdrago)",
       "C-03 cancelar-turno-con-anticipacion-minima (augusto163)",
       "C-04 agendar-sobreturno-autorizado (maximiliano-di-natale)",
-      "C-05 registrar-ausencia-y-atencion-de-turno (quinto integrante, pendiente)"
+      "C-05 registrar-ausencia-y-atencion-de-turno (eechavarria)"
     ],
     "bloqueantes": [
-      "PA-01: Maven o Gradle sin decidir, bloquea C-01",
-      "Quinto integrante sin nombre ni usuario de GitHub"
+      "Ninguno: PA-01 resuelta con Gradle y el equipo esta completo (5 integrantes)"
     ]
   },
   "skills": {
@@ -382,5 +381,33 @@
       "Git lo ejecuta una persona",
       "Build con Gradle wrapper (sigue en D-08)"
     ]
-  }
+  },
+  "equipo": [
+    {
+      "nombre": "Martin Ignacio Riquero",
+      "github": "miriquero",
+      "rol": "lider",
+      "change": "C-01 crear-turno-sin-solapamientos"
+    },
+    {
+      "nombre": "Julian Fernandez Drago",
+      "github": "julianfdrago",
+      "change": "C-02 reprogramar-turno"
+    },
+    {
+      "nombre": "Augusto Quiroga",
+      "github": "augusto163",
+      "change": "C-03 cancelar-turno-con-anticipacion-minima"
+    },
+    {
+      "nombre": "Maximiliano Di Natale",
+      "github": "maximiliano-di-natale",
+      "change": "C-04 agendar-sobreturno-autorizado"
+    },
+    {
+      "nombre": "Emiliano Jesus Echavarria",
+      "github": "eechavarria",
+      "change": "C-05 registrar-ausencia-y-atencion-de-turno"
+    }
+  ]
 }

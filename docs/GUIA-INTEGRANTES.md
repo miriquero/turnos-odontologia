@@ -195,7 +195,7 @@ entre sí: nadie depende de nadie, salvo del change base de Martín.
 - **Ojo**: tu change es de gobernanza **ALTA**. Antes de escribir código,
   contale a Martín cómo lo vas a hacer.
 
-### [COMPLETAR: quinto integrante] — `C-05 registrar-ausencia-y-atencion-de-turno`
+### Emiliano Jesus Echavarria — `C-05 registrar-ausencia-y-atencion-de-turno`
 
 - **Rama**: `feat/registrar-ausencia-y-atencion-de-turno`
 - **Qué hace**: marcar que el paciente no vino (`AUSENTE`) o que fue atendido
