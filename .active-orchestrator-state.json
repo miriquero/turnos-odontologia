@@ -428,5 +428,13 @@
     "tests": "104 tests, 104 pasaron, 0 fallaron (./gradlew test, verificado por el orquestador)",
     "tareas": "41 de 41",
     "ajuste_post_apply": "NotificadorPaciente paso a notificar(Turno, AccionAuditoria) para que los 4 changes de FASE 1 no tengan que editar un puerto congelado (R-05)"
+  },
+  "engram": {
+    "completado": "2026-11-19",
+    "evidencia": "docs/evidencia/etapa-7-engram.md",
+    "observaciones_del_proyecto": 6,
+    "project_key": "desarrollosoftware (detectado por git_remote; agrupa los dos TP de la materia)",
+    "versionado_en_el_repo": false,
+    "motivo_no_versionado": "El repositorio es publico y .engram mezcla memoria de los dos trabajos practicos"
   }
 }
