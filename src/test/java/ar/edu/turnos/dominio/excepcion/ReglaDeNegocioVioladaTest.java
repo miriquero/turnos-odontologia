@@ -20,6 +20,13 @@ class ReglaDeNegocioVioladaTest {
     }
 
     @Test
+    void exponeElCodigoDeTransicionDeTurno() {
+        assertThat(ReglaDeNegocioViolada.RN_TU_02).isEqualTo("RN-TU-02");
+        assertThat(new ReglaDeNegocioViolada(ReglaDeNegocioViolada.RN_TU_02, "transicion").codigo())
+                .isEqualTo("RN-TU-02");
+    }
+
+    @Test
     void rechazaCodigoVacio() {
         assertThatThrownBy(() -> new ReglaDeNegocioViolada(" ", "x")).isInstanceOf(IllegalArgumentException.class);
     }
