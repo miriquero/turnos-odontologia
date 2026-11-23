@@ -21,10 +21,11 @@ public final class Turno {
     private final EstadoTurno estado;
     private final boolean esSobreturno;
     private final String motivoAusencia;
+    private final String motivoCancelacion;
 
     private Turno(String id, String pacienteId, String profesionalId, String sillonId, String prestacionId,
             int duracionMinutos, LocalDateTime inicio, EstadoTurno estado, boolean esSobreturno,
-            String motivoAusencia) {
+            String motivoAusencia, String motivoCancelacion) {
         this.id = Objects.requireNonNull(id, "id");
         this.pacienteId = Objects.requireNonNull(pacienteId, "pacienteId");
         this.profesionalId = Objects.requireNonNull(profesionalId, "profesionalId");
@@ -35,13 +36,14 @@ public final class Turno {
         this.estado = Objects.requireNonNull(estado, "estado");
         this.esSobreturno = esSobreturno;
         this.motivoAusencia = motivoAusencia;
+        this.motivoCancelacion = motivoCancelacion;
     }
 
     /** Alta: nace AGENDADO, sin sobreturno, con el fin derivado de la prestacion. */
     public static Turno agendar(Paciente paciente, Profesional profesional, Sillon sillon, Prestacion prestacion,
             LocalDateTime inicio) {
         return new Turno(UUID.randomUUID().toString(), paciente.id(), profesional.id(), sillon.id(),
-                prestacion.id(), prestacion.duracionMinutos(), inicio, EstadoTurno.AGENDADO, false, null);
+                prestacion.id(), prestacion.duracionMinutos(), inicio, EstadoTurno.AGENDADO, false, null, null);
     }
 
     /** Rehidratacion de un turno ya existente (usada por adaptadores y fixtures); tampoco acepta fin. */
@@ -49,14 +51,21 @@ public final class Turno {
             String prestacionId, int duracionMinutos, LocalDateTime inicio, EstadoTurno estado,
             boolean esSobreturno) {
         return reconstruir(id, pacienteId, profesionalId, sillonId, prestacionId, duracionMinutos, inicio, estado,
-                esSobreturno, null);
+                esSobreturno, null, null);
     }
 
     public static Turno reconstruir(String id, String pacienteId, String profesionalId, String sillonId,
             String prestacionId, int duracionMinutos, LocalDateTime inicio, EstadoTurno estado,
             boolean esSobreturno, String motivoAusencia) {
         return new Turno(id, pacienteId, profesionalId, sillonId, prestacionId, duracionMinutos, inicio, estado,
-                esSobreturno, motivoAusencia);
+                esSobreturno, motivoAusencia, null);
+    }
+
+    public static Turno reconstruir(String id, String pacienteId, String profesionalId, String sillonId,
+            String prestacionId, int duracionMinutos, LocalDateTime inicio, EstadoTurno estado,
+            boolean esSobreturno, String motivoAusencia, String motivoCancelacion) {
+        return new Turno(id, pacienteId, profesionalId, sillonId, prestacionId, duracionMinutos, inicio, estado,
+                esSobreturno, motivoAusencia, motivoCancelacion);
     }
 
     public String id() { return id; }
@@ -69,22 +78,28 @@ public final class Turno {
     public EstadoTurno estado() { return estado; }
     public boolean esSobreturno() { return esSobreturno; }
     public String motivoAusencia() { return motivoAusencia; }
+    public String motivoCancelacion() { return motivoCancelacion; }
 
     public Turno marcarAusente(String motivo) {
         String normalizado = motivo == null ? null : motivo.trim();
-        return conEstado(EstadoTurno.AUSENTE, normalizado == null || normalizado.isEmpty() ? null : normalizado);
+        return conEstado(EstadoTurno.AUSENTE, normalizado == null || normalizado.isEmpty() ? null : normalizado, null);
     }
 
     public Turno marcarAtendido() {
-        return conEstado(EstadoTurno.ATENDIDO, null);
+        return conEstado(EstadoTurno.ATENDIDO, null, null);
     }
 
-    private Turno conEstado(EstadoTurno destino, String motivoAusencia) {
+    public Turno cancelar(String motivo) {
+        String normalizado = motivo == null ? null : motivo.trim();
+        return conEstado(EstadoTurno.CANCELADO, null, normalizado == null || normalizado.isEmpty() ? null : normalizado);
+    }
+
+    private Turno conEstado(EstadoTurno destino, String motivoAusencia, String motivoCancelacion) {
         if (!estado.puedeTransicionarA(destino)) {
             throw new ReglaDeNegocioViolada(ReglaDeNegocioViolada.RN_TU_02,
                     "No hay transicion de " + estado + " a " + destino);
         }
         return new Turno(id, pacienteId, profesionalId, sillonId, prestacionId, duracionMinutos,
-                intervalo.inicio(), destino, esSobreturno, motivoAusencia);
+                intervalo.inicio(), destino, esSobreturno, motivoAusencia, motivoCancelacion);
     }
 }

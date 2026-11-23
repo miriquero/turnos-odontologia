@@ -95,6 +95,19 @@ class TurnoTest {
         assertThat(cerrado.motivoAusencia()).isNull();
     }
 
+    @Test
+    void cancelaDeFormaInmutable() {
+        Turno original = agendar();
+        Turno cerrado = original.cancelar("motivo valido");
+        assertThat(original.estado()).isEqualTo(EstadoTurno.AGENDADO);
+        assertThat(original.motivoCancelacion()).isNull();
+        assertThat(cerrado).isNotSameAs(original);
+        assertThat(cerrado.id()).isEqualTo(original.id());
+        assertThat(cerrado.intervalo()).isEqualTo(original.intervalo());
+        assertThat(cerrado.estado()).isEqualTo(EstadoTurno.CANCELADO);
+        assertThat(cerrado.motivoCancelacion()).isEqualTo("motivo valido");
+    }
+
     @ParameterizedTest
     @EnumSource(value = EstadoTurno.class, names = {"ATENDIDO", "CANCELADO", "AUSENTE"})
     void rechazaCerrarUnEstadoTerminal(EstadoTurno estado) {
@@ -103,6 +116,9 @@ class TurnoTest {
                 .isInstanceOfSatisfying(ReglaDeNegocioViolada.class,
                         ex -> assertThat(ex.codigo()).isEqualTo("RN-TU-02"));
         assertThatThrownBy(t::marcarAtendido)
+                .isInstanceOfSatisfying(ReglaDeNegocioViolada.class,
+                        ex -> assertThat(ex.codigo()).isEqualTo("RN-TU-02"));
+        assertThatThrownBy(() -> t.cancelar("motivo"))
                 .isInstanceOfSatisfying(ReglaDeNegocioViolada.class,
                         ex -> assertThat(ex.codigo()).isEqualTo("RN-TU-02"));
     }
