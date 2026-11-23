@@ -193,6 +193,43 @@ tiempo después de cerrar la FASE 1.
 
 ---
 
+## Cómo correr los tests
+
+```bash
+git clone https://github.com/miriquero/turnos-odontologia
+cd turnos-odontologia
+./gradlew test
+```
+
+**Único requisito**: tener un **JDK 17** instalado. `build.gradle` fija
+`toolchain { languageVersion = JavaLanguageVersion.of(17) }`, así que la
+compilación usa Java 17 aunque el JDK por defecto del sistema sea otro.
+
+El archivo `gradle/gradle-daemon-jvm.properties` (`toolchainVersion=17`) hace
+además que **Gradle mismo** se ejecute sobre Java 17. Sin ese archivo, en una
+máquina cuyo JDK por defecto sea 25 o 26 el build falla antes de compilar nada:
+
+```
+BUG! exception in phase 'semantic analysis' in source unit '_BuildScript_'
+Unsupported class file major version 70
+```
+
+El motivo es que el wrapper trae Gradle 8.10.2, que soporta ejecutarse hasta
+Java 24 (recién Gradle 9.4 corre sobre Java 26, y migrar a Gradle 9 obligaría a
+subir también el plugin de Spring Boot). El criterio de daemon resuelve el
+problema **sin rutas absolutas**: Gradle elige un JDK 17 entre los que detecta
+solo, incluidos los de `~/.jdks`.
+
+Si Gradle no encuentra ningún JDK 17 instalado, se le indica la ruta solo para
+esa corrida:
+
+```powershell
+$env:JAVA_HOME = "<ruta-al-jdk-17>"; .\gradlew.bat test
+```
+
+Verificado el 2026-11-21 en una máquina con JDK 26 por defecto:
+`./gradlew clean test` → **104 tests, 0 fallos**.
+
 ## Resumen
 
 | Criterio | Puntos | Estado |
