@@ -54,10 +54,10 @@ Conservá los IDs de las fichas al editar o reordenar.
         ├── C-04 agendar-sobreturno-autorizado              [maximiliano-di-natale]
         ├── C-05 registrar-ausencia-y-atencion-de-turno     [quinto integrante]
         │
-        │   ── FASE 2: cierre del MVP. También dependen SOLO de C-01 ──
+        │   ── FASE 2: cierre del MVP. C-01; C-08 también del contrato de C-02 ──
         ├── C-06 administrar-recursos-catalogo-y-pacientes
         ├── C-07 consultar-agenda-y-huecos-libres
-        ├── C-08 auditoria-y-notificacion-simulada
+        ├── C-08 auditoria-y-notificacion-simulada  (+ C-02: contrato de detalle)
         ├── C-09 persistencia-jpa-h2-y-concurrencia
         ├── C-10 api-rest-turnos                  (opcional en v1; depende de C-01 + C-09)
         │
@@ -103,7 +103,7 @@ GATE 1: C-01 ✓ mergeado en master                 ← FORK (hasta 5 paralelos;
 GATE 2: cada integrante libera su change de FASE 1 (toma el próximo sin esperar a los demás)
   → C-06 administrar-recursos-catalogo-y-pacientes [julianfdrago, al terminar C-02]
   → C-09 persistencia-jpa-h2-y-concurrencia        [augusto163, al terminar C-03]
-  → C-08 auditoria-y-notificacion-simulada         [maximiliano-di-natale, al terminar C-04]
+  → C-08 auditoria-y-notificacion-simulada         [maximiliano-di-natale, al terminar C-04; requiere C-02 mergeado por el contrato de detalle]
   → C-10 api-rest-turnos (opcional)                [quinto, al terminar C-05 y si C-09 ✓]
 
 GATE 3: C-02…C-09 ✓ (C-10 no bloquea)
@@ -123,7 +123,7 @@ GATE 6: todo lo anterior ✓ (opcional)
   → C-18 odontograma-y-ficha-clinica
 ```
 
-**Qué NO se puede hacer en paralelo**: nada arranca antes de que C-01 esté mergeado; C-11 espera a C-02…C-09; ningún change de FASE 3 arranca antes de C-11; C-17 espera a C-14 y C-15. **Qué sí**: C-02…C-09 son mutuamente independientes (cada uno solo importa clases de C-01 y escribe archivos nuevos). Mientras el líder trabaja C-01, el resto puede preparar (sin mergear) sus propuestas OPSX (`proposal.md`, `tasks.md`) leyendo los "Leer antes" de su change.
+**Qué NO se puede hacer en paralelo**: nada arranca antes de que C-01 esté mergeado; C-11 espera a C-02…C-09; ningún change de FASE 3 arranca antes de C-11; C-17 espera a C-14 y C-15. **Qué sí**: C-02…C-09 son mutuamente independientes (cada uno solo importa clases de C-01 y escribe archivos nuevos), con una excepción: C-08 consume el puerto `RegistroDetalleReprogramacion` que expone C-02, así que debe rebasear cuando C-02 esté mergeado. Mientras el líder trabaja C-01, el resto puede preparar (sin mergear) sus propuestas OPSX (`proposal.md`, `tasks.md`) leyendo los "Leer antes" de su change.
 
 ### Camino crítico (3 changes — mínimo irreducible)
 
@@ -209,20 +209,23 @@ Paso │ Líder (miriquero)         │ julianfdrago        │ augusto163      
 - **Scope**:
   - `aplicacion.casouso.ReprogramarTurno` (archivo nuevo): cambia `inicio` y opcionalmente profesional, sillón y prestación; recalcula `fin` (`RN-AG-01`)
   - Revalida con `ServicioDisponibilidad` pasando `excluirTurnoId = turno.id` (un turno no se solapa consigo mismo); la franja anterior queda libre en el mismo acto
-  - Solo desde `AGENDADO`: `CANCELADO`, `ATENDIDO` y `AUSENTE` se rechazan con `RN-TU-04`
-  - Auditoría `REPROGRAMADO` con horario anterior y nuevo (y recurso anterior/nuevo si cambió, `RN-AU-03`); notificación vía puerto
+  - Solo desde `AGENDADO`: `CANCELADO`, `ATENDIDO` y `AUSENTE` se rechazan con `RN-TU-04`, constante local de C-02 (sin tocar `ReglaDeNegocioViolada`)
+  - No-op: si inicio, profesional, sillón y prestación coinciden con los actuales, no guarda, no audita, no registra detalle y no notifica. Si cambia cualquiera de esos campos —aunque sea solo el sillón— se ejecuta el flujo completo
+  - Auditoría `REPROGRAMADO` en `RegistroAuditoria`; el detalle de horario y recurso anterior/nuevo (`RN-AU-03`) vive en el puerto nuevo `RegistroDetalleReprogramacion` (opción B: no se modifica `EventoAuditoria` de C-01); notificación vía puerto con tolerancia a fallos (`RN-NO-03`)
   - Tests: ver escenarios mínimos
 - **Dependencias**: `C-01`
 - **Governance**: MEDIO
 - **Historias**: US-011, US-012
-- **Reglas**: RN-TU-03, RN-TU-04, RN-AG-01, RN-AG-02, RN-AG-03, RN-AG-04, RN-AU-03
+- **Reglas**: RN-TU-03, RN-TU-04, RN-AG-01, RN-AG-02, RN-AG-03, RN-AG-04, RN-AG-08, RN-AU-01, RN-AU-03, RN-NO-03
 - **Escenarios mínimos**:
-  1. Camino feliz: mover `[10:00, 10:30)` a `[11:00, 11:30)` libre → nuevo horario, franja anterior libre, auditoría `REPROGRAMADO`.
+  1. Camino feliz: mover `[10:00, 10:30)` a `[11:00, 11:30)` libre → nuevo horario, franja anterior libre, auditoría `REPROGRAMADO` y detalle con horario anterior/nuevo.
   2. Error por solapamiento: mover sobre un turno ajeno del mismo profesional → `RN-AG-02`; del mismo sillón → `RN-AG-03`.
-  3. **Borde**: reprogramar a un horario contiguo `[10:30, 11:00)` de otro turno → aceptado (`RN-AG-04`); reprogramar al **mismo horario** que ya tenía → aceptado e idempotente (se excluye a sí mismo).
+  3. **Borde**: reprogramar a un horario contiguo `[10:30, 11:00)` de otro turno → aceptado (`RN-AG-04`); reprogramar al **mismo horario con los mismos recursos** → no-op sin guardar, auditar ni notificar; el mismo horario con otro sillón libre sí audita y notifica.
   4. Turno `CANCELADO` / `ATENDIDO` / `AUSENTE` → `RN-TU-04`.
+  5. Cambio de solo sillón, solo profesional o solo prestación con igual duración → se registran evento y detalle aunque el horario no cambie.
+  6. Recurso resultante inactivo o inicio no estrictamente futuro → `RN-AG-08` (`RN-TU-03` exige las mismas reglas que un alta; este código no figuraba en la ficha original y queda señalado para revisión del líder).
 - **Leer antes**:
-  - `knowledge-base/05_reglas_de_negocio.md` → `RN-TU-03`, `RN-TU-04`, `RN-AG-01`, `RN-AU-03`
+  - `knowledge-base/05_reglas_de_negocio.md` → `RN-TU-03`, `RN-TU-04`, `RN-AG-01`…`RN-AG-04`, `RN-AG-08`, `RN-AU-01`, `RN-AU-03`, `RN-NO-03`
   - `knowledge-base/07_flujos_principales.md` → F-02
   - `knowledge-base/06_funcionalidades.md` → US-011, US-012
   - `knowledge-base/08_arquitectura_propuesta.md` → § Organización para cinco personas en paralelo
@@ -302,7 +305,7 @@ Paso │ Líder (miriquero)         │ julianfdrago        │ augusto163      
 
 ---
 
-## FASE 2 — Cierre del MVP (dependen solo de C-01, salvo C-10 y C-11)
+## FASE 2 — Cierre del MVP (dependen de C-01; C-08 también del contrato de C-02; salvo C-10 y C-11)
 
 > Mismo criterio que la FASE 1: archivos nuevos, sin tocar el núcleo. Se asignan a quien termine antes su change de FASE 1.
 
@@ -352,10 +355,11 @@ Paso │ Líder (miriquero)         │ julianfdrago        │ augusto163      
 - **Scope**:
   - `infraestructura.notificacion.AdaptadorNotificacionSimulado`: implementa `NotificadorPaciente`, registra el envío, **no sale a la red**; el mensaje solo trae fecha, hora, profesional y prestación (sin datos clínicos, `RN-NO-04`)
   - Adaptador de `RegistroAuditoria` append-only (sin update ni delete, `RN-AU-02`); `aplicacion.casouso.ConsultarHistorialDeTurno`
+  - **Contrato de C-02**: `ConsultarHistorialDeTurno` combina `RegistroAuditoria.listarPorTurno` con `RegistroDetalleReprogramacion.listarPorTurno` (puerto expuesto por C-02) para mostrar el horario y el recurso anterior y nuevo de cada `REPROGRAMADO` (`RN-AU-03`). Sin esta lectura el detalle queda grabado pero invisible en el historial.
   - Operación sin usuario identificable se rechaza (`RN-AU-01`)
   - Resiliencia: el fallo de notificación no invalida la operación (`RN-NO-03`)
   - Tests: ver escenarios mínimos (sin credenciales ni red)
-- **Dependencias**: `C-01`
+- **Dependencias**: `C-01`; contractualmente `C-02` (puerto `RegistroDetalleReprogramacion`). Si C-02 aún no está en `master`, coordinar el merge antes de pedir revisión
 - **Governance**: CRITICO (audit trail sobre datos de salud, Ley 25.326)
 - **Historias**: US-019, US-020
 - **Reglas**: RN-NO-01…04, RN-AU-01, RN-AU-02, RN-AU-03
@@ -365,6 +369,7 @@ Paso │ Líder (miriquero)         │ julianfdrago        │ augusto163      
   - `knowledge-base/06_funcionalidades.md` → US-019, US-020
   - `knowledge-base/04_modelo_de_datos.md` → `EventoAuditoria`
   - `knowledge-base/09_decisiones_y_supuestos.md` → `D-04`, `R-04`
+  - `openspec/changes/reprogramar-turno/specs/agenda/reprogramacion/spec.md` y `openspec/changes/reprogramar-turno/design.md` → contrato del detalle de reprogramación (`D-C02-9`)
 
 ### [C-09] `persistencia-jpa-h2-y-concurrencia`
 - **Estado**: `[ ]` pendiente
