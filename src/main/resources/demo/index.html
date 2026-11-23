@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agenda de turnos — demo</title>
+<style>
+  :root {
+    --fondo: #f4f6f8; --panel: #ffffff; --borde: #d8dee6; --texto: #1b2430;
+    --suave: #5d6b7a; --acento: #0d6b5f; --ok: #0f7a48; --error: #b4232a;
+    --ocupa: #eef4f3; --libera: #f3f4f6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --fondo: #10151b; --panel: #1a222b; --borde: #2c3845; --texto: #e6edf3;
+      --suave: #9aa8b5; --acento: #41b8a4; --ok: #46c07e; --error: #f4777d;
+      --ocupa: #1d2b29; --libera: #222a31;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px 16px; background: var(--fondo); color: var(--texto);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .envoltorio { max-width: 1060px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--suave); font-size: 13px; margin-bottom: 20px; }
+  .columnas { display: grid; grid-template-columns: 1.25fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 820px) { .columnas { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--panel); border: 1px solid var(--borde); border-radius: 10px;
+    padding: 16px; margin-bottom: 18px;
+  }
+  .panel h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--suave); margin: 0 0 12px; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--suave); padding: 0 8px 6px; font-weight: 600; }
+  td { padding: 8px; border-top: 1px solid var(--borde); vertical-align: middle; }
+  tr.ocupa td { background: var(--ocupa); }
+  tr.libre td { background: var(--libera); color: var(--suave); }
+  .franja { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  .etiqueta { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 99px;
+    border: 1px solid var(--borde); }
+  .st { font-size: 11px; letter-spacing: .04em; }
+  label { display: block; font-size: 12px; color: var(--suave); margin: 10px 0 4px; }
+  select, input {
+    width: 100%; padding: 8px 9px; font: inherit; color: var(--texto);
+    background: var(--fondo); border: 1px solid var(--borde); border-radius: 6px;
+  }
+  .fila { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  button {
+    font: inherit; padding: 9px 14px; border-radius: 6px; cursor: pointer;
+    border: 1px solid var(--acento); background: var(--acento); color: #fff; font-weight: 600;
+  }
+  button.secundario { background: transparent; color: var(--acento); }
+  .botones { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .aviso { padding: 10px 12px; border-radius: 7px; font-size: 14px; margin-bottom: 14px;
+    border-left: 3px solid; }
+  .aviso.ok { border-color: var(--ok); color: var(--ok); background: color-mix(in srgb, var(--ok) 9%, transparent); }
+  .aviso.mal { border-color: var(--error); color: var(--error); background: color-mix(in srgb, var(--error) 9%, transparent); }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+  .regla { font-size: 13px; color: var(--suave); border-top: 1px solid var(--borde);
+    margin-top: 14px; padding-top: 12px; }
+  .regla b { color: var(--texto); }
+  ul.lista { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+  ul.lista li { padding: 6px 0; border-top: 1px solid var(--borde); color: var(--suave); }
+  ul.lista li:first-child { border-top: 0; }
+  .vacio { color: var(--suave); font-size: 13px; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="envoltorio">
+  <h1>Agenda de turnos — demo</h1>
+  <p class="sub">
+    Consultorio odontológico · datos ficticios · agenda del <b id="fecha">—</b> · ahora: <span id="ahora">—</span>
+  </p>
+
+  <div id="banner"></div>
+
+  <div class="columnas">
+    <div>
+      <div class="panel">
+        <h2>Agenda</h2>
+        <table>
+          <thead><tr><th>Franja</th><th>Paciente</th><th>Profesional</th><th>Sillón</th><th>Estado</th></tr></thead>
+          <tbody id="turnos"></tbody>
+        </table>
+        <p class="regla">
+          <b>RN-AG-04</b> — los intervalos son semiabiertos <code>[inicio, fin)</code>: un turno que
+          empieza <b>exactamente</b> cuando termina otro es válido. Un turno
+          <span class="etiqueta">CANCELADO</span> o <span class="etiqueta">AUSENTE</span> deja de
+          ocupar su franja (<b>RN-AG-07</b>).
+        </p>
+      </div>
+
+      <div class="panel">
+        <h2>Auditoría — append only</h2>
+        <ul class="lista" id="auditoria"></ul>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <h2>Nuevo turno</h2>
+        <form id="formulario">
+          <label for="pacienteId">Paciente</label>
+          <select id="pacienteId" name="pacienteId"></select>
+          <div class="fila">
+            <div>
+              <label for="profesionalId">Profesional</label>
+              <select id="profesionalId" name="profesionalId"></select>
+            </div>
+            <div>
+              <label for="sillonId">Sillón</label>
+              <select id="sillonId" name="sillonId"></select>
+            </div>
+          </div>
+          <div class="fila">
+            <div>
+              <label for="prestacionId">Prestación</label>
+              <select id="prestacionId" name="prestacionId"></select>
+            </div>
+            <div>
+              <label for="hora">Hora de inicio</label>
+              <input id="hora" name="hora" type="time" value="11:00" step="300" required>
+            </div>
+          </div>
+          <div class="botones">
+            <button type="submit">Agendar</button>
+            <button type="button" class="secundario" id="btnPegado">Probar turno pegado</button>
+            <button type="button" class="secundario" id="btnSolape">Probar solapamiento</button>
+          </div>
+        </form>
+        <p class="regla">
+          El <b>fin</b> no se elige: se deriva de la duración de la prestación (<b>RN-AG-01</b>).
+          Por eso el formulario solo pide la hora de inicio.
+        </p>
+      </div>
+
+      <div class="panel">
+        <h2>Avisos al paciente — simulados</h2>
+        <ul class="lista" id="avisos"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+function escapar(texto) {
+  return String(texto).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+
+function opciones(select, items, conDuracion) {
+  select.innerHTML = items.map((i) => {
+    const extra = conDuracion ? " (" + i.duracion + " min)" : "";
+    return '<option value="' + escapar(i.id) + '">' + escapar(i.nombre + extra) + "</option>";
+  }).join("");
+}
+
+function pintar(estado) {
+  $("fecha").textContent = estado.fecha;
+  $("ahora").textContent = estado.ahora;
+
+  const previos = {
+    pacienteId: $("pacienteId").value, profesionalId: $("profesionalId").value,
+    sillonId: $("sillonId").value, prestacionId: $("prestacionId").value,
+  };
+  opciones($("pacienteId"), estado.pacientes, false);
+  opciones($("profesionalId"), estado.profesionales, false);
+  opciones($("sillonId"), estado.sillones, false);
+  opciones($("prestacionId"), estado.prestaciones, true);
+  for (const [clave, valor] of Object.entries(previos)) {
+    if (valor) { $(clave).value = valor; }
+  }
+
+  const filas = [...estado.turnos].sort((a, b) => a.inicio.localeCompare(b.inicio));
+  $("turnos").innerHTML = filas.length === 0
+    ? '<tr><td colspan="5" class="vacio">Sin turnos.</td></tr>'
+    : filas.map((t) =>
+        '<tr class="' + (t.ocupa ? "ocupa" : "libre") + '">'
+        + '<td class="franja">' + escapar(t.inicio) + " &ndash; " + escapar(t.fin) + "</td>"
+        + "<td>" + escapar(t.paciente) + "</td>"
+        + "<td>" + escapar(t.profesional) + "</td>"
+        + "<td>" + escapar(t.sillon) + "</td>"
+        + '<td class="st">' + escapar(t.estado) + (t.esSobreturno ? " &middot; sobreturno" : "") + "</td>"
+        + "</tr>").join("");
+
+  $("auditoria").innerHTML = estado.auditoria.length === 0
+    ? '<li class="vacio">Sin eventos.</li>'
+    : estado.auditoria.map((e) =>
+        "<li><code>" + escapar(e.accion) + "</code> &middot; " + escapar(e.momento)
+        + " &middot; " + escapar(e.usuario) + "</li>").join("");
+
+  $("avisos").innerHTML = estado.avisos.length === 0
+    ? '<li class="vacio">Sin avisos.</li>'
+    : estado.avisos.map((a) => "<li>" + escapar(a) + "</li>").join("");
+
+  if (estado.codigoRechazo) {
+    $("banner").innerHTML = '<div class="aviso mal"><b>Rechazado &mdash; '
+      + escapar(estado.codigoRechazo) + "</b><br>" + escapar(estado.mensajeRechazo) + "</div>";
+  } else if (estado.aviso) {
+    $("banner").innerHTML = '<div class="aviso ok">' + escapar(estado.aviso) + "</div>";
+  } else {
+    $("banner").innerHTML = "";
+  }
+}
+
+async function pedir(url, cuerpo) {
+  const opcionesFetch = cuerpo === undefined ? {} : {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: cuerpo,
+  };
+  const res = await fetch(url, opcionesFetch);
+  pintar(await res.json());
+}
+
+function preparar(hora, html, clase) {
+  $("profesionalId").value = "P1";
+  $("sillonId").value = "S1";
+  $("prestacionId").value = "LIMPIEZA";
+  $("hora").value = hora;
+  $("banner").innerHTML = '<div class="aviso ' + clase + '">' + html + "</div>";
+}
+
+$("formulario").addEventListener("submit", (evento) => {
+  evento.preventDefault();
+  pedir("/api/agendar", new URLSearchParams(new FormData(evento.target)).toString());
+});
+
+$("btnPegado").addEventListener("click", () => preparar("11:00",
+  "11:00 arranca justo cuando termina el turno de 10:30. Seg&uacute;n <code>RN-AG-04</code> "
+  + "tiene que aceptarse. Dale a Agendar.", "ok"));
+
+$("btnSolape").addEventListener("click", () => preparar("10:15",
+  "10:15 cae dentro del turno de 10:00 a 10:30. Tiene que rechazarse con <code>RN-AG-02</code>. "
+  + "Dale a Agendar.", "mal"));
+
+pedir("/api/estado");
+</script>
+</body>
+</html>

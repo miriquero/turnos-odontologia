@@ -1,5 +1,23 @@
+# Build de Gradle
 .gradle/
 build/
+out/
+bin/
+
+# IDEs
 .idea/
 *.iml
-out/
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs y temporales
+*.log
+*.tmp

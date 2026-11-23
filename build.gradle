@@ -23,9 +23,19 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-// Este change no tiene aplicacion ejecutable (sin REST ni persistencia): solo el jar plano.
+// El MVP no tiene aplicacion ejecutable (sin REST ni persistencia): solo el jar plano.
+// La demo NO usa Spring, asi que bootJar sigue desactivado.
 bootJar { enabled = false }
 jar { enabled = true }
+
+// Demo visual, FUERA del alcance del MVP: levanta el nucleo detras de una pagina web servida
+// por el servidor HTTP del propio JDK. Sin dependencias nuevas y sin Spring.
+tasks.register('demo', JavaExec) {
+    group = 'application'
+    description = 'Levanta la demo web en http://localhost:8080 (cambiar el puerto: --args="9090")'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'ar.edu.turnos.infraestructura.demo.DemoApp'
+}
 
 tasks.named('test') {
     useJUnitPlatform()

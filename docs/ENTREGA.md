@@ -75,12 +75,15 @@ Nada pendiente.
 | Elección justificada por escrito | **Listo** — en el `proposal.md` |
 | Spec con 3 escenarios verificables como mínimo | **Listo** — 52 escenarios |
 | Implementación fiel al spec | **Listo** |
-| Un test por escenario, todos en verde | **Listo** — 104 tests, 0 fallas |
+| Un test por escenario, todos en verde | **Listo** — suite completa: 207 tests, 0 fallos |
 | Change archivado | **Listo** — `2026-11-19-crear-turno-sin-solapamientos` |
-| Specs sincronizados | **Listo** — 2 capacidades vigentes |
+| Specs sincronizados | **Listo** — 4 capacidades vigentes |
 
-Nada pendiente para `C-01`. Los changes `C-02` a `C-05` de los compañeros son
-trabajo adicional del grupo, no un requisito de este criterio.
+Nada pendiente para `C-01`. Los changes de los compañeros son trabajo adicional
+del grupo, no un requisito de este criterio. Al 2026-11-23 están mergeados
+`C-02` (reprogramar, Julián), `C-04` (sobreturno, Maximiliano) y `C-05`
+(ausencia/atención, Emiliano); `C-03` (cancelar, Augusto) sigue pendiente.
+
 
 ---
 
@@ -172,10 +175,10 @@ mientras estén todos los elementos; los 12 archivos de test viven en
 
 ---
 
-## Si preguntan por qué no hay interfaz
+## La interfaz: qué hay y qué no
 
-Es una **decisión documentada**, no una falta. La consigna lo admite
-expresamente:
+El **MVP no tiene interfaz gráfica**, y es una decisión documentada del
+Discovery, no una omisión. La consigna del Global lo admite expresamente:
 
 > La implementación puede ser una API o un módulo con su lógica de dominio,
 > **no hace falta interfaz gráfica**.
@@ -183,13 +186,52 @@ expresamente:
 Y sobre el video pide mostrar "Apply/Verify: **los tests pasando**", no una
 pantalla.
 
-Cómo defenderlo en una línea: *la consigna admite un módulo de dominio, y
-preferimos invertir el tiempo en que la regla central esté bien especificada y
-probada con 104 tests, antes que en una capa de presentación que no se evalúa*.
+### Pero además hay una demo web
 
-El API REST igual está planificada como `C-10 api-rest-turnos`, asignada a Emi y
-marcada **opcional**: depende de `C-09` (persistencia) y se encara sólo si sobra
-tiempo después de cerrar la FASE 1.
+Fuera del alcance del MVP, el repositorio incluye un **adaptador de
+demostración**: una página que deja ver y mostrar las reglas de agenda
+funcionando contra el mismo núcleo que prueban los tests.
+
+```bash
+./gradlew demo
+```
+
+Y se abre en <http://localhost:8080>.
+
+Qué se ve:
+
+- La agenda del día siguiente, ya sembrada con **dos turnos contiguos**
+  (`[10:00, 10:30)` y `[10:30, 11:00)`) — la regla que define el producto,
+  visible de entrada.
+- Un botón **"Probar turno pegado"** que carga las 11:00: se acepta, porque los
+  intervalos son semiabiertos (`RN-AG-04`).
+- Un botón **"Probar solapamiento"** que carga las 10:15: se rechaza con
+  `RN-AG-02`, y ni la agenda ni la auditoría cambian.
+- La auditoría append-only y los avisos simulados al paciente, en vivo.
+
+### Por qué esto no contradice la decisión del Discovery
+
+Porque no es alcance del MVP: es un **adaptador**, igual que lo sería una API
+REST o una base de datos. El núcleo no se enteró de que existe.
+
+- **No se tocó ni una línea** de `dominio` ni de `aplicacion` para construirla.
+  Son todos archivos nuevos bajo `infraestructura/`.
+- **No agrega ni una dependencia** al build: usa el servidor HTTP que ya trae el
+  JDK (`com.sun.net.httpserver`), no Spring Web. Eso es obligado: el test de
+  arquitectura `ReglaDeOroTest` falla si cualquier fuente de producción nombra
+  el framework, y ese test es la prueba de la primera regla dura del proyecto.
+- **Todos los datos son ficticios** (`RN-PA-04`): ningún nombre ni documento
+  corresponde a una persona real.
+- El almacenamiento es en memoria y se pierde al cortar el proceso. La
+  persistencia real es `C-09`, que sigue pendiente.
+
+Es, de paso, la mejor evidencia de que la arquitectura hexagonal valió la pena:
+agregar una pantalla fue enchufar un adaptador a los puertos que ya existían.
+
+### El API REST
+
+Sigue planificada como `C-10 api-rest-turnos`, marcada **opcional**: depende de
+`C-09` (persistencia) y se encara sólo si sobra tiempo.
 
 ---
 
@@ -228,7 +270,7 @@ $env:JAVA_HOME = "<ruta-al-jdk-17>"; .\gradlew.bat test
 ```
 
 Verificado el 2026-11-21 en una máquina con JDK 26 por defecto:
-`./gradlew clean test` → **104 tests, 0 fallos**.
+`./gradlew clean test` → **207 tests, 0 fallos**.
 
 ## Resumen
 
