@@ -30,8 +30,8 @@ public final class ServidorDemo {
     public void iniciar() throws IOException {
         servidor = HttpServer.create(new InetSocketAddress(puerto), 0);
         servidor.createContext("/", this::pagina);
-        servidor.createContext("/api/estado", i -> responderApi(i, api.estado()));
-        servidor.createContext("/api/reiniciar", i -> responderApi(i, api.reiniciar()));
+        servidor.createContext("/api/estado", i -> responderApi(i, api.estado(leerCuerpo(i))));
+        servidor.createContext("/api/reiniciar", i -> responderApi(i, api.reiniciar(leerCuerpo(i))));
         servidor.createContext("/api/agendar", i -> responderApi(i, api.agendar(leerCuerpo(i))));
         servidor.createContext("/api/sobreturno", i -> responderApi(i, api.sobreturno(leerCuerpo(i))));
         servidor.createContext("/api/reprogramar", i -> responderApi(i, api.reprogramar(leerCuerpo(i))));

@@ -24,7 +24,9 @@
     position:sticky;top:0;z-index:30}
   .tituloBarra{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-bottom:10px}
   header h1{font-size:16px;margin:0;letter-spacing:-.01em}
-  .dia{color:var(--suave)} .dia::first-letter{text-transform:uppercase}
+  .dia{color:var(--suave);min-width:160px;display:inline-block;text-align:center}
+  .dia::first-letter{text-transform:uppercase}
+  .navDia{display:flex;align-items:center;gap:6px}
   .ficticio{font-size:11px;border:1px solid var(--borde);border-radius:99px;padding:2px 9px;color:var(--suave)}
   .reloj{margin-left:auto;color:var(--suave);font-variant-numeric:tabular-nums}
   nav{display:flex;gap:2px;overflow-x:auto}
@@ -130,7 +132,12 @@
 <header>
   <div class="tituloBarra">
     <h1>Turnos · consultorio odontológico</h1>
-    <span class="dia" id="dia">—</span>
+    <span class="navDia">
+      <button class="accion sec mini" id="diaAnterior" title="Día anterior">‹</button>
+      <span class="dia" id="dia">—</span>
+      <button class="accion sec mini" id="diaSiguiente" title="Día siguiente">›</button>
+      <button class="accion sec mini" id="diaHoy">Hoy</button>
+    </span>
     <span class="ficticio">datos ficticios</span>
     <span class="reloj">ahora <b id="ahora">—</b></span>
     <button class="accion sec mini" id="reiniciar">Restablecer</button>
@@ -151,6 +158,7 @@ let vista = "agenda";
 let turnoAbierto = null;
 let nuevo = null;      // ranura clickeada
 let intento = null;    // ultima alta rechazada, para ofrecer sobreturno
+let fechaSel = null;   // dia que muestra la agenda; null = hoy
 
 const PANTALLAS = [
   ["agenda",        "Agenda"],
@@ -161,12 +169,16 @@ const PANTALLAS = [
 ];
 
 async function pedir(url, datos) {
-  const opciones = datos ? {
+  // Toda llamada lleva el dia que se esta mirando, para no volver a hoy despues de cada accion.
+  const cuerpo = {...(datos || {}), fecha: fechaSel || ""};
+  E = await (await fetch(url, {
     method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"},
-    body:new URLSearchParams(datos).toString()} : {};
-  E = await (await fetch(url, opciones)).json();
+    body:new URLSearchParams(cuerpo).toString()})).json();
+  fechaSel = E.fechaIso;
   pintar();
 }
+
+function irAlDia(iso) { fechaSel = iso; nuevo = null; intento = null; pedir("/api/estado"); }
 
 function ir(v, id) { vista = v; if (id !== undefined) turnoAbierto = id; intento = null; pintar(); }
 function opciones(items, sel, conDuracion) {
@@ -177,7 +189,7 @@ function opciones(items, sel, conDuracion) {
 /* ============================================================ AGENDA */
 function vistaAgenda() {
   return `<div class="dos">
-    <section class="caja"><h2>Agenda del día<span>${esc(E.turnos.length)} turnos</span></h2>
+    <section class="caja"><h2>Agenda del día<span>${esc(E.turnos.filter(t => t.fecha === E.fechaIso).length)} turnos</span></h2>
       <div class="grilla" id="grilla"></div></section>
     <aside><section class="caja"><h2 id="panelTitulo">Nuevo turno</h2>
       <div class="cuerpo" id="panelCuerpo"></div></section></aside>
@@ -196,7 +208,8 @@ function pintarGrilla() {
       `<div class="ranura ${h.enPunto?"enPunto":""} ${h.pasado?"pasado":""}"
             data-prof="${esc(p.id)}" data-iso="${esc(h.iso)}"></div>`).join("");
 
-    const delDia = E.turnos.filter(t => t.profesionalId === p.id && t.fila >= 0 && t.fila < E.filas)
+    const delDia = E.turnos.filter(t => t.profesionalId === p.id && t.fecha === E.fechaIso
+                                    && t.fila >= 0 && t.fila < E.filas)
       .sort((a,b) => a.fila - b.fila || a.alto - b.alto);
     delDia.forEach(t => { t._alto = Math.max(1, Math.min(t.alto, E.filas - t.fila)); });
     // Carriles por GRUPO de superposición: un turno solo se angosta si de verdad comparte franja.
@@ -231,7 +244,7 @@ function pintarGrilla() {
                  left:calc(${t._carril*ancho}% + 3px); width:calc(${ancho}% - 6px)">${cuerpo}</div>`;
     }).join("");
 
-    const linea = (E.ahoraFila >= 0 && E.ahoraFila < E.filas)
+    const linea = (E.esHoy && E.ahoraFila >= 0 && E.ahoraFila < E.filas)
       ? `<div class="ahora" style="top:calc(${E.ahoraFila} * var(--fila))"></div>` : "";
     return `<div class="col">${ranuras}${bloques}${linea}</div>`;
   }).join("");
@@ -517,6 +530,9 @@ document.addEventListener("click", (ev) => {
     pintar();
   }
 });
+$("diaAnterior").onclick  = () => irAlDia(E.diaAnterior);
+$("diaSiguiente").onclick = () => irAlDia(E.diaSiguiente);
+$("diaHoy").onclick       = () => irAlDia(E.hoyIso);
 $("reiniciar").onclick = () => { turnoAbierto = null; intento = null; nuevo = null; pedir("/api/reiniciar", {}); };
 
 pedir("/api/estado");

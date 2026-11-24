@@ -22,9 +22,10 @@ public final class DemoApp {
         servidor.iniciar();
         System.out.println();
         System.out.println("  Agenda de turnos andando en  http://localhost:" + servidor.puerto());
-        System.out.println("  Grilla del dia: de " + SeedDemo.inicioDeGrilla(contexto.reloj).toLocalTime()
-                + " a " + SeedDemo.finDeGrilla(contexto.reloj).toLocalTime()
-                + " (anclada a la hora actual, con turnos pasados y futuros)");
+        System.out.println("  Agenda de hoy: de "
+                + SeedDemo.inicioDeGrilla(contexto.reloj, SeedDemo.hoy(contexto.reloj)).toLocalTime()
+                + " a " + SeedDemo.finDeGrilla(contexto.reloj, SeedDemo.hoy(contexto.reloj)).toLocalTime()
+                + " (anclada a la hora actual). Los otros dias se muestran completos.");
         System.out.println("  Ctrl+C para cortar.");
         System.out.println();
     }

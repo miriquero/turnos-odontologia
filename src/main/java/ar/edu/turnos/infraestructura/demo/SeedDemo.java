@@ -8,6 +8,7 @@ import ar.edu.turnos.dominio.modelo.Profesional;
 import ar.edu.turnos.dominio.modelo.Sillon;
 import ar.edu.turnos.dominio.modelo.Turno;
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -42,12 +43,37 @@ public final class SeedDemo {
         return LocalDateTime.now(reloj).truncatedTo(ChronoUnit.HOURS);
     }
 
-    public static LocalDateTime inicioDeGrilla(Clock reloj) {
-        return ancla(reloj).minusHours(HORAS_ANTES);
+    /** Primera y ultima hora de la jornada cuando la grilla no es la de hoy. */
+    private static final int APERTURA = 8;
+    private static final int CIERRE = 20;
+
+    /**
+     * Ventana que muestra la grilla para una fecha.
+     *
+     * <p>Para <b>hoy</b> la ventana se ancla al reloj —dos horas atras, seis adelante— para que
+     * siempre haya turnos pasados, sobre los que se puede registrar la asistencia o la ausencia,
+     * y futuros, sobre los que se puede agendar. Para cualquier <b>otro dia</b> se muestra la
+     * jornada completa, de {@value #APERTURA} a {@value #CIERRE}, que es lo que esperaria ver
+     * quien abre la agenda de la semana que viene.
+     */
+    public static LocalDateTime inicioDeGrilla(Clock reloj, LocalDate fecha) {
+        return esHoy(reloj, fecha)
+                ? ancla(reloj).minusHours(HORAS_ANTES)
+                : fecha.atTime(APERTURA, 0);
     }
 
-    public static LocalDateTime finDeGrilla(Clock reloj) {
-        return ancla(reloj).plusHours(HORAS_DESPUES);
+    public static LocalDateTime finDeGrilla(Clock reloj, LocalDate fecha) {
+        return esHoy(reloj, fecha)
+                ? ancla(reloj).plusHours(HORAS_DESPUES)
+                : fecha.atTime(CIERRE, 0);
+    }
+
+    public static boolean esHoy(Clock reloj, LocalDate fecha) {
+        return fecha.equals(LocalDate.now(reloj));
+    }
+
+    public static LocalDate hoy(Clock reloj) {
+        return LocalDate.now(reloj);
     }
 
     public static List<Paciente> pacientes() {

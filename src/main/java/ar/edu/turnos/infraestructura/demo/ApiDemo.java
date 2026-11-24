@@ -20,6 +20,7 @@ import ar.edu.turnos.dominio.servicio.SolicitudDisponibilidad;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -60,18 +61,28 @@ public final class ApiDemo {
 
     // ---------------------------------------------------------------- operaciones
 
-    public Respuesta estado() {
-        return ok(null, null, null);
+    public Respuesta estado(String cuerpo) {
+        return ok(null, null, null, fechaDe(cuerpo));
     }
 
-    public Respuesta reiniciar() {
+    public Respuesta reiniciar(String cuerpo) {
         c.reiniciarAgenda();
-        return ok("Agenda restablecida.", null, null);
+        return ok("Agenda restablecida.", null, null, fechaDe(cuerpo));
+    }
+
+    /** La fecha que pide la pantalla; si no manda ninguna, hoy. */
+    private LocalDate fechaDe(String cuerpo) {
+        String f = formulario(cuerpo).get("fecha");
+        try {
+            return f == null || f.isBlank() ? SeedDemo.hoy(c.reloj) : LocalDate.parse(f);
+        } catch (RuntimeException e) {
+            return SeedDemo.hoy(c.reloj);
+        }
     }
 
     public Respuesta agendar(String cuerpo) {
         Map<String, String> f = formulario(cuerpo);
-        return ejecutar(() -> {
+        return ejecutar(fechaDe(cuerpo), () -> {
             Turno t = c.agendarTurno.ejecutar(new SolicitudAgendarTurno(
                     f.get("pacienteId"), f.get("profesionalId"), f.get("sillonId"),
                     f.get("prestacionId"), momento(f.get("inicio")), USUARIO));
@@ -81,7 +92,7 @@ public final class ApiDemo {
 
     public Respuesta sobreturno(String cuerpo) {
         Map<String, String> f = formulario(cuerpo);
-        return ejecutar(() -> {
+        return ejecutar(fechaDe(cuerpo), () -> {
             Turno t = c.agendarSobreturno.ejecutar(new SolicitudAgendarSobreturno(
                     f.get("pacienteId"), f.get("profesionalId"), f.get("sillonId"),
                     f.get("prestacionId"), momento(f.get("inicio")), true,
@@ -92,7 +103,7 @@ public final class ApiDemo {
 
     public Respuesta reprogramar(String cuerpo) {
         Map<String, String> f = formulario(cuerpo);
-        return ejecutar(() -> {
+        return ejecutar(fechaDe(cuerpo), () -> {
             Turno t = c.reprogramarTurno.ejecutar(new SolicitudReprogramarTurno(
                     f.get("turnoId"), momento(f.get("inicio")), vacioANulo(f.get("profesionalId")),
                     vacioANulo(f.get("sillonId")), vacioANulo(f.get("prestacionId")), USUARIO));
@@ -102,7 +113,7 @@ public final class ApiDemo {
 
     public Respuesta cancelar(String cuerpo) {
         Map<String, String> f = formulario(cuerpo);
-        return ejecutar(() -> {
+        return ejecutar(fechaDe(cuerpo), () -> {
             Turno t = c.cancelarTurno.ejecutar(
                     new SolicitudCancelarTurno(f.get("turnoId"), f.get("motivo"), USUARIO));
             return "Turno cancelado. La franja " + franja(t) + " queda libre.";
@@ -111,7 +122,7 @@ public final class ApiDemo {
 
     public Respuesta atendido(String cuerpo) {
         Map<String, String> f = formulario(cuerpo);
-        return ejecutar(() -> {
+        return ejecutar(fechaDe(cuerpo), () -> {
             Turno t = c.marcarAtendido.ejecutar(new SolicitudMarcarAtendido(f.get("turnoId"), USUARIO));
             return "Atencion registrada: " + nombrePaciente(t) + ".";
         });
@@ -119,7 +130,7 @@ public final class ApiDemo {
 
     public Respuesta ausente(String cuerpo) {
         Map<String, String> f = formulario(cuerpo);
-        return ejecutar(() -> {
+        return ejecutar(fechaDe(cuerpo), () -> {
             Turno t = c.registrarAusencia.ejecutar(
                     new SolicitudRegistrarAusencia(f.get("turnoId"), f.get("motivo"), USUARIO));
             return "Ausencia registrada. La franja " + franja(t) + " queda libre.";
@@ -151,9 +162,9 @@ public final class ApiDemo {
                     "explicacion", Json.texto(r.disponible()
                             ? "La franja esta libre para ese profesional y ese sillon."
                             : explicarCodigo(r.codigoRegla(), "")));
-            return new Respuesta(200, estadoJson(null, null, null, consulta));
+            return new Respuesta(200, estadoJson(null, null, null, consulta, fechaDe(cuerpo)));
         } catch (RuntimeException e) {
-            return ok(null, null, "No se pudo evaluar la franja. Revisa los datos.");
+            return ok(null, null, "No se pudo evaluar la franja. Revisa los datos.", fechaDe(cuerpo));
         }
     }
 
@@ -163,13 +174,13 @@ public final class ApiDemo {
         String ejecutar();
     }
 
-    private Respuesta ejecutar(Operacion op) {
+    private Respuesta ejecutar(LocalDate fecha, Operacion op) {
         try {
-            return ok(op.ejecutar(), null, null);
+            return ok(op.ejecutar(), null, null, fecha);
         } catch (ReglaDeNegocioViolada e) {
-            return ok(null, e.codigo(), explicarCodigo(e.codigo(), e.getMessage()));
+            return ok(null, e.codigo(), explicarCodigo(e.codigo(), e.getMessage()), fecha);
         } catch (RuntimeException e) {
-            return ok(null, null, "No se pudo completar la operacion. Revisa los datos cargados.");
+            return ok(null, null, "No se pudo completar la operacion. Revisa los datos cargados.", fecha);
         }
     }
 
@@ -198,8 +209,8 @@ public final class ApiDemo {
         };
     }
 
-    private Respuesta ok(String aviso, String codigo, String mensaje) {
-        return new Respuesta(200, estadoJson(aviso, codigo, mensaje, "null"));
+    private Respuesta ok(String aviso, String codigo, String mensaje, LocalDate fecha) {
+        return new Respuesta(200, estadoJson(aviso, codigo, mensaje, "null", fecha));
     }
 
     private LocalDateTime momento(String iso) {
@@ -232,12 +243,18 @@ public final class ApiDemo {
 
     // ---------------------------------------------------------------- serializacion
 
-    private String estadoJson(String aviso, String codigoRechazo, String mensajeRechazo, String consulta) {
-        LocalDateTime desde = SeedDemo.inicioDeGrilla(c.reloj);
-        LocalDateTime hasta = SeedDemo.finDeGrilla(c.reloj);
+    private String estadoJson(String aviso, String codigoRechazo, String mensajeRechazo,
+            String consulta, LocalDate fecha) {
+        LocalDateTime desde = SeedDemo.inicioDeGrilla(c.reloj, fecha);
+        LocalDateTime hasta = SeedDemo.finDeGrilla(c.reloj, fecha);
         LocalDateTime ahora = LocalDateTime.now(c.reloj);
         return Json.objeto(
                 "fecha", Json.texto(desde.format(FECHA)),
+                "fechaIso", Json.texto(fecha.toString()),
+                "hoyIso", Json.texto(SeedDemo.hoy(c.reloj).toString()),
+                "esHoy", String.valueOf(SeedDemo.esHoy(c.reloj, fecha)),
+                "diaAnterior", Json.texto(fecha.minusDays(1).toString()),
+                "diaSiguiente", Json.texto(fecha.plusDays(1).toString()),
                 "ahora", Json.texto(ahora.format(HORA)),
                 "ahoraFila", String.valueOf(fila(desde, ahora)),
                 "desde", Json.texto(desde.format(HORA)),
@@ -287,6 +304,7 @@ public final class ApiDemo {
                 "inicio", Json.texto(t.intervalo().inicio().format(HORA)),
                 "fin", Json.texto(t.intervalo().fin().format(HORA)),
                 "inicioIso", Json.texto(t.intervalo().inicio().toString()),
+                "fecha", Json.texto(t.intervalo().inicio().toLocalDate().toString()),
                 "fila", String.valueOf(fila(desde, t.intervalo().inicio())),
                 "alto", String.valueOf(Math.max(1, t.duracionMinutos() / SeedDemo.MINUTOS_POR_FILA)),
                 "duracion", String.valueOf(t.duracionMinutos()),
