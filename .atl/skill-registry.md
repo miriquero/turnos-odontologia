@@ -5,60 +5,60 @@
 See `_shared/skill-resolver.md` for the full resolution protocol.
 
 Project: turnos-odontologia (Spring Boot, Gradle wrapper, JUnit 5, hexagonal architecture, JPA with H2 in tests and PostgreSQL as target, team of 5 working by pull request).
-Scanned: 41 SKILL.md files (26 in ~/.claude/skills, 9 in ~/.config/opencode/skills, 6 in project .claude/skills). Skipped: skill-registry (self); no sdd-* or _shared found. The 9 opencode skills were duplicates of ~/.claude/skills (first found kept). 31 skills registered.
+Scanned: 41 SKILL.md files across the user-level and project-level skill directories. Skipped: skill-registry (self); no sdd-* or _shared found. Duplicates between directories were collapsed, keeping the first found. 31 skills registered.
 
 ## User Skills
 
 ### Relevant to this stack (use these)
 
-| Trigger | Skill | Path |
-|---------|-------|------|
-| Adding or changing features in an existing Spring Boot 3/4 project (controllers, validation, ProblemDetail, JPA, config) | java-springboot | C:\Users\zbook\.claude\skills\java-springboot\SKILL.md |
-| Building or reviewing a Spring Boot backend: REST layer, services, data access, caching, async | springboot-patterns | C:\Users\zbook\.claude\skills\springboot-patterns\SKILL.md |
-| TDD for Spring Boot: features, bug fixes, refactors (MockMvc, Mockito, Testcontainers, JaCoCo) | springboot-tdd | C:\Users\zbook\.claude\skills\springboot-tdd\SKILL.md |
-| Adding, refactoring or debugging Java tests with JUnit 5, AssertJ, Mockito | java-junit | C:\Users\zbook\.claude\skills\java-junit\SKILL.md |
-| Building features or fixing bugs test-first; red-green-refactor; integration tests | tdd | C:\Users\zbook\.claude\skills\tdd\SKILL.md |
-| Designing JPA entities/relationships; fixing Hibernate query, transaction or N+1 problems | jpa-patterns | C:\Users\zbook\.claude\skills\jpa-patterns\SKILL.md |
-| Creating repositories, entity relationships, @Query, pagination, auditing, transactions | spring-data-jpa | C:\Users\zbook\.claude\skills\spring-data-jpa\SKILL.md |
-| Checking, auditing or fixing a Gradle build (dependencies, performance, structure) | gradle-best-practices | C:\Users\zbook\.claude\skills\gradle-best-practices\SKILL.md |
-| PostgreSQL table design, indexes, data types, constraints, migrations | postgres | C:\Users\zbook\.claude\skills\postgres\SKILL.md |
+| Trigger | Skill |
+|---|---|
+| Adding or changing features in an existing Spring Boot 3/4 project (controllers, validation, ProblemDetail, JPA, config) | java-springboot |
+| Building or reviewing a Spring Boot backend: REST layer, services, data access, caching, async | springboot-patterns |
+| TDD for Spring Boot: features, bug fixes, refactors (MockMvc, Mockito, Testcontainers, JaCoCo) | springboot-tdd |
+| Adding, refactoring or debugging Java tests with JUnit 5, AssertJ, Mockito | java-junit |
+| Building features or fixing bugs test-first; red-green-refactor; integration tests | tdd |
+| Designing JPA entities/relationships; fixing Hibernate query, transaction or N+1 problems | jpa-patterns |
+| Creating repositories, entity relationships, @Query, pagination, auditing, transactions | spring-data-jpa |
+| Checking, auditing or fixing a Gradle build (dependencies, performance, structure) | gradle-best-practices |
+| PostgreSQL table design, indexes, data types, constraints, migrations | postgres |
 
 ### OpenSpec workflow (project-level)
 
-| Trigger | Skill | Path |
-|---------|-------|------|
-| Implement tasks of an OpenSpec change ("opsx apply") | openspec-apply-change | .claude\skills\openspec-apply-change\SKILL.md |
-| Archive a completed change ("opsx archive") | openspec-archive-change | .claude\skills\openspec-archive-change\SKILL.md |
-| Explore ideas before/during a change ("opsx explore") | openspec-explore | .claude\skills\openspec-explore\SKILL.md |
-| Propose a new change with all artifacts ("opsx propose") | openspec-propose | .claude\skills\openspec-propose\SKILL.md |
-| Sync delta specs to main specs ("opsx sync") | openspec-sync-specs | .claude\skills\openspec-sync-specs\SKILL.md |
-| Revise a change's planning artifacts ("opsx update") | openspec-update-change | .claude\skills\openspec-update-change\SKILL.md |
+| Trigger | Skill |
+|---|---|
+| Implement tasks of an OpenSpec change ("opsx apply") | openspec-apply-change |
+| Archive a completed change ("opsx archive") | openspec-archive-change |
+| Explore ideas before/during a change ("opsx explore") | openspec-explore |
+| Propose a new change with all artifacts ("opsx propose") | openspec-propose |
+| Sync delta specs to main specs ("opsx sync") | openspec-sync-specs |
+| Revise a change's planning artifacts ("opsx update") | openspec-update-change |
 
 ### Foundation / tooling (Active Stack)
 
-| Trigger | Skill | Path |
-|---------|-------|------|
-| Start or resume project foundation | active-orchestrator | C:\Users\zbook\.claude\skills\active-orchestrator\SKILL.md |
-| Generate AGENTS.md / CLAUDE.md from KB and roadmap | agent-instruction | C:\Users\zbook\.claude\skills\agent-instruction\SKILL.md |
-| Discovery/market research before the KB | discovery-research | C:\Users\zbook\.claude\skills\discovery-research\SKILL.md |
-| Find or install agent skills | find-skill | C:\Users\zbook\.claude\skills\find-skill\SKILL.md |
-| Build the 10-file knowledge-base/ | kb-creator | C:\Users\zbook\.claude\skills\kb-creator\SKILL.md |
-| Generate or update CHANGES.md | roadmap-generator | C:\Users\zbook\.claude\skills\roadmap-generator\SKILL.md |
-| Create or improve skills | skill-creator | C:\Users\zbook\.claude\skills\skill-creator\SKILL.md |
-| Research a competitor from a URL | web-scraper | C:\Users\zbook\.claude\skills\web-scraper\SKILL.md |
+| Trigger | Skill |
+|---|---|
+| Start or resume project foundation | active-orchestrator |
+| Generate AGENTS.md / CLAUDE.md from KB and roadmap | agent-instruction |
+| Discovery/market research before the KB | discovery-research |
+| Find or install agent skills | find-skill |
+| Build the 10-file knowledge-base/ | kb-creator |
+| Generate or update CHANGES.md | roadmap-generator |
+| Create or improve skills | skill-creator |
+| Research a competitor from a URL | web-scraper |
 
 ### Not applicable to this stack (listed for completeness)
 
-| Trigger | Skill | Path |
-|---------|-------|------|
-| WCAG 2.2 accessibility audit | accessibility | C:\Users\zbook\.claude\skills\accessibility\SKILL.md |
-| WCAG 2.1 AA design/page review | accessibility-review | C:\Users\zbook\.claude\skills\accessibility-review\SKILL.md |
-| Android Kotlin idioms | android-kotlin-core | C:\Users\zbook\.claude\skills\android-kotlin-core\SKILL.md |
-| OWASP API Top 10 review of REST/GraphQL/gRPC | api-security-review | C:\Users\zbook\.claude\skills\api-security-review\SKILL.md |
-| FastAPI / Pydantic work | fastapi | C:\Users\zbook\.claude\skills\fastapi\SKILL.md |
-| PostGIS spatial SQL | postgis | C:\Users\zbook\.claude\skills\postgis\SKILL.md |
-| pytest coverage | pytest-coverage | C:\Users\zbook\.claude\skills\pytest-coverage\SKILL.md |
-| systemd services and timers | systemd-services | C:\Users\zbook\.claude\skills\systemd-services\SKILL.md |
+| Trigger | Skill |
+|---|---|
+| WCAG 2.2 accessibility audit | accessibility |
+| WCAG 2.1 AA design/page review | accessibility-review |
+| Android Kotlin idioms | android-kotlin-core |
+| OWASP API Top 10 review of REST/GraphQL/gRPC | api-security-review |
+| FastAPI / Pydantic work | fastapi |
+| PostGIS spatial SQL | postgis |
+| pytest coverage | pytest-coverage |
+| systemd services and timers | systemd-services |
 
 ## Compact Rules
 
@@ -230,7 +230,7 @@ Pre-digested rules per skill. Delegators copy matching blocks into sub-agent pro
 ## Project Conventions
 
 | File | Path | Notes |
-|------|------|-------|
+|---|---|
 | knowledge-base/ | knowledge-base/01_vision_y_objetivos.md | Source of truth for the domain (10 files): vision and goals |
 | | knowledge-base/02_descripcion_general.md | General description |
 | | knowledge-base/03_actores_y_roles.md | Actors and roles |

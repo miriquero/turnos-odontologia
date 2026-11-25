@@ -21,3 +21,7 @@ Thumbs.db
 # Logs y temporales
 *.log
 *.tmp
+
+# Archivo de entrega del aula: lleva los legajos de los cinco integrantes y este
+# repositorio es publico. Se sube al aula virtual, no a GitHub.
+riquero_martin_*.txt
